@@ -1,14 +1,14 @@
 <!--
 layout: home
-title: Ethermint Documentation
-description: Ethermint is a scalable and interoperable Ethereum, built on Proof-of-Stake with fast-finality.
+title: Global Impact Chain Documentation
+description: Global Impact Chain is a scalable and interoperable Ethereum, built on Proof-of-Stake with fast-finality.
 sections:
   - title: Introduction
-    desc: Read a high-level overview of Ethermint and its architecture.
+    desc: Read a high-level overview of Global Impact Chain and its architecture.
     url: /intro
     icon: ethereum-intro
   - title: Basics
-    desc: Start with the basic concepts of Ethermint, like accounts and transactions.
+    desc: Start with the basic concepts of Global Impact Chain, like accounts and transactions.
     url: /basics
     icon: basics
   - title: Core Concepts
@@ -27,16 +27,16 @@ stack:
     label: ethereum-black
     url: https://eth.wiki
   - title: Tendermint Core
-    desc: The leading BFT engine for building blockchains, powering Ethermint.
+    desc: The leading BFT engine for building blockchains, powering Global Impact Chain.
     color: "#00BB00"
     label: core
-    url: http://docs.tendermint.com
+    url: http://docs.globalimpactchain.com
 footer:
   newsletter: false
 aside: false
 -->
 
-# Ethermint Documentation
+# Global Impact Chain Documentation
 
 ## Get Started
 
@@ -44,10 +44,10 @@ aside: false
 
 ## Reference
 
-- **[Basics](./basics/)**: Documentation on the basic concepts of Ethermint, like the standard anatomy of an application, the transaction lifecycle and accounts management.
-- **[Core](./core/)**: Documentation on the core concepts of Ethermint, like `encoding`, and `events`.
+- **[Basics](./basics/)**: Documentation on the basic concepts of Global Impact Chain, like the standard anatomy of an application, the transaction lifecycle and accounts management.
+- **[Core](./core/)**: Documentation on the core concepts of Global Impact Chain, like `encoding`, and `events`.
 - **[Building Modules](./building-modules/)**: Important concepts for module developers like `message`s, `keeper`s, `handler`s and `querier`s.
-- **[Interfaces](./interfaces/)**: Documentation on building interfaces for Ethermint applications.
+- **[Interfaces](./interfaces/)**: Documentation on building interfaces for Global Impact Chain applications.
 
 ## Other Resources
 
@@ -57,4 +57,4 @@ aside: false
 
 ## Contribute
 
-See [this file](https://github.com/cosmos/ethermint/blob/development/docs/DOCS_README.md) for details of the build process and considerations when making changes.
+See [this file](https://github.com/mendozg/GlobalImpactChain/blob/development/docs/DOCS_README.md) for details of the build process and considerations when making changes.
