@@ -11,10 +11,10 @@ If you want to open a PR on the Cosmos SDK to update the documentation, please f
 
 ## Docs Build Workflow
 
-The documentation for Ethermint is hosted at https://docs.ethermint.zone/
+The documentation for Global Impact Chain is hosted at https://docs.globalimpactchain.com/
 
 built from the files in this (`/docs`) directory for
-[master](https://github.com/cosmos/ethermint/tree/master/docs).
+[master](https://github.com/mendozg/GlobalImpactChain/tree/master/docs).
 
 ### How It Works
 
