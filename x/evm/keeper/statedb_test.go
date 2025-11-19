@@ -10,9 +10,9 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
-	"github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
+	"github.com/mendozg/impactchain/x/evm/types"
 )
 
 func (suite *KeeperTestSuite) TestBloomFilter() {
@@ -500,7 +500,7 @@ func (suite *KeeperTestSuite) TestCommitStateDB_Commit() {
 		}
 
 		suite.Require().NotNil(acc, tc.name)
-		ethAcc, ok := acc.(*ethermint.EthAccount)
+		ethAcc, ok := acc.(*impactchain.EthAccount)
 		suite.Require().True(ok)
 		suite.Require().Equal(ethcrypto.Keccak256([]byte("code")), ethAcc.CodeHash)
 	}

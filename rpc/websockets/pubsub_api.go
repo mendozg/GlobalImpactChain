@@ -17,9 +17,9 @@ import (
 
 	context "github.com/cosmos/cosmos-sdk/client/context"
 
-	rpcfilters "github.com/cosmos/ethermint/rpc/namespaces/eth/filters"
-	rpctypes "github.com/cosmos/ethermint/rpc/types"
-	evmtypes "github.com/cosmos/ethermint/x/evm/types"
+	rpcfilters "github.com/mendozg/impactchain/rpc/namespaces/eth/filters"
+	rpctypes "github.com/mendozg/impactchain/rpc/types"
+	evmtypes "github.com/mendozg/impactchain/x/evm/types"
 )
 
 // PubSubAPI is the eth_ prefixed set of APIs in the Web3 JSON-RPC spec

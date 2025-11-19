@@ -1,14 +1,14 @@
 # EVM Test Suite
 
-The commands (script) will clone and run the contract tests [compound, synthetix, uniswap, ...] against the Ethermint's EVM. This test will comprehensively check the EVM against that of Ethereum's to verify that the results show the exact same behaviour. 
+The commands (script) will clone and run the contract tests [compound, synthetix, uniswap, ...] against the Impactchain's EVM. This test will comprehensively check the EVM against that of Ethereum's to verify that the results show the exact same behaviour. 
 
 ## Test Suites
-The following are instructions on how to run the specified EVM test suite on the Ethermint network.
+The following are instructions on how to run the specified EVM test suite on the Impactchain network.
 
 ### Synthetix
 ```bash
-# Start the ethermint node and expose rpc endpoint on :8545
-# this can be done by running `./init.sh` in the ethermint dir
+# Start the impactchain node and expose rpc endpoint on :8545
+# this can be done by running `./init.sh` in the impactchain dir
 
 # Synthetix
 git clone https://github.com/Synthetixio/synthetix.git
@@ -23,8 +23,8 @@ npx hardhat test --network development
 
 ### Uniswap
 ```bash
-# Start the ethermint node and expose rpc endpoint on :8545
-# this can be done by running `./init.sh` in the ethermint dir
+# Start the impactchain node and expose rpc endpoint on :8545
+# this can be done by running `./init.sh` in the impactchain dir
 
 # Uniswap v3
 git clone https://github.com/Uniswap/uniswap-v3-core.git
@@ -32,10 +32,10 @@ yarn install
 npx hardhat compile
 ```
 
-Add ethermint network in hardhat.config.ts
+Add impactchain network in hardhat.config.ts
 ```
 networks: {
-    ethermint: {
+    impactchain: {
       url: 'http://127.0.0.1:8545',
       accounts: 'remote',
       gas: 'auto',
@@ -48,23 +48,23 @@ networks: {
 
 ```bash
 # run the test suite
-npx hardhat test --network ethermint
+npx hardhat test --network impactchain
 ```
 
 ### Compound
 ```bash
-# Start the ethermint node and expose rpc endpoint on :8545
-# this can be done by running `./init.sh` in the ethermint dir
+# Start the impactchain node and expose rpc endpoint on :8545
+# this can be done by running `./init.sh` in the impactchain dir
 
 git clone https://github.com/compound-finance/compound-protocol.git
 npm install
 npx addle compile
 ```
 
-Add ethermint network in saddle.config.ts
+Add impactchain network in saddle.config.ts
 ```
 networks: {                                           
-    ethermint: {
+    impactchain: {
       providers: [                                      
         {env: "PROVIDER"},                              
         {http: "http://127.0.0.1:8545"}                 
@@ -93,15 +93,15 @@ networks: {
 
 ```bash
 # run the test suite
-npx saddle test -n ethermint
+npx saddle test -n impactchain
 ```
 
 ## Known Issues:
 
-1. `ether.js` is not compatible with Ethermint.
-Currently, Ethermint is unable to interact with the test suites and there is a slight incompatibility with ethers.js. The issue has been documented and has been in the `icebox` for some time ([https://github.com/cosmos/ethermint/issues/349](https://github.com/cosmos/ethermint/issues/349)). 
+1. `ether.js` is not compatible with Impactchain.
+Currently, Impactchain is unable to interact with the test suites and there is a slight incompatibility with ethers.js. The issue has been documented and has been in the `icebox` for some time ([https://github.com/mendozg/impactchain/issues/349](https://github.com/mendozg/impactchain/issues/349)). 
 
-In the future, when compatible with `ethers.js`, the test suites can be run with the simple command and will be run against the Ethermint EVM. If the all of the tests pass without incident, the Ethermint EVM implementation can be deemed to produce the same output as the Ethereum EVM.
+In the future, when compatible with `ethers.js`, the test suites can be run with the simple command and will be run against the Impactchain EVM. If the all of the tests pass without incident, the Impactchain EVM implementation can be deemed to produce the same output as the Ethereum EVM.
 
 2. For `Uniswap V3`, Hardhat tests only work for hardhat test network when loading the node accounts.
 3. For `Compound`, some tests are failing in their CI.

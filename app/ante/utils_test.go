@@ -10,11 +10,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 
-	"github.com/cosmos/ethermint/app"
-	ante "github.com/cosmos/ethermint/app/ante"
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
-	evmtypes "github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/app"
+	ante "github.com/mendozg/impactchain/app/ante"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
+	evmtypes "github.com/mendozg/impactchain/x/evm/types"
 
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 
@@ -26,7 +26,7 @@ type AnteTestSuite struct {
 	suite.Suite
 
 	ctx         sdk.Context
-	app         *app.EthermintApp
+	app         *app.ImpactchainApp
 	anteHandler sdk.AnteHandler
 }
 
@@ -36,7 +36,7 @@ func (suite *AnteTestSuite) SetupTest() {
 	suite.app = app.Setup(checkTx)
 	suite.app.Codec().RegisterConcrete(&sdk.TestMsg{}, "test/TestMsg", nil)
 
-	suite.ctx = suite.app.BaseApp.NewContext(checkTx, abci.Header{Height: 1, ChainID: "ethermint-3", Time: time.Now().UTC()})
+	suite.ctx = suite.app.BaseApp.NewContext(checkTx, abci.Header{Height: 1, ChainID: "impactchain-3", Time: time.Now().UTC()})
 	suite.app.EvmKeeper.SetParams(suite.ctx, evmtypes.DefaultParams())
 
 	suite.anteHandler = ante.NewAnteHandler(suite.app.AccountKeeper, suite.app.EvmKeeper, suite.app.SupplyKeeper)
@@ -51,11 +51,11 @@ func newTestMsg(addrs ...sdk.AccAddress) *sdk.TestMsg {
 }
 
 func newTestCoins() sdk.Coins {
-	return sdk.NewCoins(ethermint.NewPhotonCoinInt64(500000000))
+	return sdk.NewCoins(impactchain.NewPhotonCoinInt64(500000000))
 }
 
 func newTestStdFee() auth.StdFee {
-	return auth.NewStdFee(220000, sdk.NewCoins(ethermint.NewPhotonCoinInt64(150)))
+	return auth.NewStdFee(220000, sdk.NewCoins(impactchain.NewPhotonCoinInt64(150)))
 }
 
 // GenerateAddress generates an Ethereum address.
@@ -90,7 +90,7 @@ func newTestSDKTx(
 }
 
 func newTestEthTx(ctx sdk.Context, msg evmtypes.MsgEthereumTx, priv tmcrypto.PrivKey) (sdk.Tx, error) {
-	chainIDEpoch, err := ethermint.ParseChainID(ctx.ChainID())
+	chainIDEpoch, err := impactchain.ParseChainID(ctx.ChainID())
 	if err != nil {
 		return nil, err
 	}

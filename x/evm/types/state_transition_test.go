@@ -7,9 +7,9 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
-	"github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
+	"github.com/mendozg/impactchain/x/evm/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethcmn "github.com/ethereum/go-ethereum/common"
@@ -29,7 +29,7 @@ func (suite *StateDBTestSuite) TestGetHashFn() {
 			func() {
 				suite.ctx = suite.ctx.WithBlockHeader(
 					abci.Header{
-						ChainID:        "ethermint-1",
+						ChainID:        "impactchain-1",
 						Height:         1,
 						ValidatorsHash: []byte("val_hash"),
 					},
@@ -51,7 +51,7 @@ func (suite *StateDBTestSuite) TestGetHashFn() {
 			func() {
 				suite.ctx = suite.ctx.WithBlockHeader(
 					abci.Header{
-						ChainID:        "ethermint-1",
+						ChainID:        "impactchain-1",
 						Height:         100,
 						ValidatorsHash: []byte("val_hash"),
 					},
@@ -67,7 +67,7 @@ func (suite *StateDBTestSuite) TestGetHashFn() {
 			func() {
 				suite.ctx = suite.ctx.WithBlockHeader(
 					abci.Header{
-						ChainID:        "ethermint-1",
+						ChainID:        "impactchain-1",
 						Height:         100,
 						ValidatorsHash: []byte("val_hash"),
 					},
@@ -81,7 +81,7 @@ func (suite *StateDBTestSuite) TestGetHashFn() {
 			func() {
 				suite.ctx = suite.ctx.WithBlockHeader(
 					abci.Header{
-						ChainID:        "ethermint-1",
+						ChainID:        "impactchain-1",
 						Height:         100,
 						ValidatorsHash: []byte("val_hash"),
 					},
@@ -111,7 +111,7 @@ func (suite *StateDBTestSuite) TestTransitionDb() {
 	suite.stateDB.SetNonce(suite.address, 123)
 
 	addr := sdk.AccAddress(suite.address.Bytes())
-	balance := ethermint.NewPhotonCoin(sdk.NewInt(5000))
+	balance := impactchain.NewPhotonCoin(sdk.NewInt(5000))
 	acc := suite.app.AccountKeeper.GetAccount(suite.ctx, addr)
 	_ = acc.SetCoins(sdk.NewCoins(balance))
 	suite.app.AccountKeeper.SetAccount(suite.ctx, acc)
@@ -201,7 +201,7 @@ func (suite *StateDBTestSuite) TestTransitionDb() {
 		{
 			"call disabled",
 			func() {
-				params := types.NewParams(ethermint.AttoPhoton, true, false)
+				params := types.NewParams(impactchain.AttoPhoton, true, false)
 				suite.stateDB.SetParams(params)
 			},
 			types.StateTransition{
@@ -222,7 +222,7 @@ func (suite *StateDBTestSuite) TestTransitionDb() {
 		{
 			"create disabled",
 			func() {
-				params := types.NewParams(ethermint.AttoPhoton, false, true)
+				params := types.NewParams(impactchain.AttoPhoton, false, true)
 				suite.stateDB.SetParams(params)
 			},
 			types.StateTransition{
@@ -245,7 +245,7 @@ func (suite *StateDBTestSuite) TestTransitionDb() {
 			func() {
 				suite.stateDB.SetParams(types.DefaultParams())
 				invalidGas := sdk.DecCoins{
-					{Denom: ethermint.AttoPhoton},
+					{Denom: impactchain.AttoPhoton},
 				}
 				suite.ctx = suite.ctx.WithMinGasPrices(invalidGas)
 			},

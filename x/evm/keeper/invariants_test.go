@@ -6,8 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
 
 	ethcmn "github.com/ethereum/go-ethereum/common"
 )
@@ -28,7 +28,7 @@ func (suite *KeeperTestSuite) TestBalanceInvariant() {
 			func() {
 				acc := suite.app.AccountKeeper.NewAccountWithAddress(suite.ctx, address.Bytes())
 				suite.Require().NotNil(acc)
-				err := acc.SetCoins(sdk.NewCoins(ethermint.NewPhotonCoinInt64(1)))
+				err := acc.SetCoins(sdk.NewCoins(impactchain.NewPhotonCoinInt64(1)))
 				suite.Require().NoError(err)
 				suite.app.AccountKeeper.SetAccount(suite.ctx, acc)
 
@@ -41,7 +41,7 @@ func (suite *KeeperTestSuite) TestBalanceInvariant() {
 			func() {
 				acc := suite.app.AccountKeeper.NewAccountWithAddress(suite.ctx, address.Bytes())
 				suite.Require().NotNil(acc)
-				err := acc.SetCoins(sdk.NewCoins(ethermint.NewPhotonCoinInt64(1)))
+				err := acc.SetCoins(sdk.NewCoins(impactchain.NewPhotonCoinInt64(1)))
 				suite.Require().NoError(err)
 				suite.app.AccountKeeper.SetAccount(suite.ctx, acc)
 

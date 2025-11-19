@@ -17,10 +17,10 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	"github.com/cosmos/ethermint/crypto/hd"
-	"github.com/cosmos/ethermint/rpc/namespaces/eth"
-	rpctypes "github.com/cosmos/ethermint/rpc/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	"github.com/mendozg/impactchain/crypto/hd"
+	"github.com/mendozg/impactchain/rpc/namespaces/eth"
+	rpctypes "github.com/mendozg/impactchain/rpc/types"
 )
 
 // PrivateAccountAPI is the personal_ prefixed set of APIs in the Web3 JSON-RPC spec.
@@ -137,7 +137,7 @@ func (api *PrivateAccountAPI) NewAccount(password string) (common.Address, error
 
 	addr := common.BytesToAddress(info.GetPubKey().Address().Bytes())
 	api.logger.Info("Your new key was generated", "address", addr.String())
-	api.logger.Info("Please backup your key file!", "path", os.Getenv("HOME")+"/.ethermintd/"+name)
+	api.logger.Info("Please backup your key file!", "path", os.Getenv("HOME")+"/.impactchaind/"+name)
 	api.logger.Info("Please remember your password!")
 	return addr, nil
 }
@@ -169,12 +169,12 @@ func (api *PrivateAccountAPI) UnlockAccount(_ context.Context, addr common.Addre
 		return false, err
 	}
 
-	ethermintPrivKey, ok := privKey.(ethsecp256k1.PrivKey)
+	impactchainPrivKey, ok := privKey.(ethsecp256k1.PrivKey)
 	if !ok {
 		return false, fmt.Errorf("invalid private key type %T, expected %T", privKey, &ethsecp256k1.PrivKey{})
 	}
 
-	api.ethAPI.SetKeys(append(api.ethAPI.GetKeys(), ethermintPrivKey))
+	api.ethAPI.SetKeys(append(api.ethAPI.GetKeys(), impactchainPrivKey))
 	api.logger.Debug("account unlocked", "address", addr.String())
 	return true, nil
 }

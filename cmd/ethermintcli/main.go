@@ -21,12 +21,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	bankcmd "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
 
-	"github.com/cosmos/ethermint/app"
-	"github.com/cosmos/ethermint/client"
-	"github.com/cosmos/ethermint/codec"
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	"github.com/cosmos/ethermint/rpc"
-	ethermint "github.com/cosmos/ethermint/types"
+	"github.com/mendozg/impactchain/app"
+	"github.com/mendozg/impactchain/client"
+	"github.com/mendozg/impactchain/codec"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	"github.com/mendozg/impactchain/rpc"
+	impactchain "github.com/mendozg/impactchain/types"
 )
 
 var (
@@ -45,13 +45,13 @@ func main() {
 
 	// Read in the configuration file for the sdk
 	config := sdk.GetConfig()
-	ethermint.SetBech32Prefixes(config)
-	ethermint.SetBip44CoinType(config)
+	impactchain.SetBech32Prefixes(config)
+	impactchain.SetBip44CoinType(config)
 	config.Seal()
 
 	rootCmd := &cobra.Command{
-		Use:   "ethermintcli",
-		Short: "Command line interface for interacting with ethermintd",
+		Use:   "impactchaincli",
+		Short: "Command line interface for interacting with impactchaind",
 	}
 
 	// Add --chain-id to persistent flags and mark it required

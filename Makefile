@@ -18,14 +18,14 @@ VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 PACKAGES=$(shell go list ./... | grep -Ev 'vendor|importer|rpc/tester')
 DOCKER_TAG = unstable
-DOCKER_IMAGE = cosmos/ethermint
-ETHERMINT_DAEMON_BINARY = ethermintd
-ETHERMINT_CLI_BINARY = ethermintcli
+DOCKER_IMAGE = cosmos/impactchain
+ETHERMINT_DAEMON_BINARY = impactchaind
+ETHERMINT_CLI_BINARY = impactchaincli
 GO_MOD=GO111MODULE=on
 BUILDDIR ?= $(CURDIR)/build
 SIMAPP = ./app
 LEDGER_ENABLED ?= true
-HTTPS_GIT := https://github.com/cosmos/ethermint.git
+HTTPS_GIT := https://github.com/mendozg/impactchain.git
 DOCKER := $(shell which docker)
 DOCKER_BUF := $(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace bufbuild/buf
 
@@ -105,7 +105,7 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 
 # process linker flags
 
-ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=ethermint \
+ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=impactchain \
 		  -X github.com/cosmos/cosmos-sdk/version.ServerName=$(ETHERMINT_DAEMON_BINARY) \
 		  -X github.com/cosmos/cosmos-sdk/version.ClientName=$(ETHERMINT_CLI_BINARY) \
 		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
@@ -136,15 +136,15 @@ else
 	go build -mod=readonly $(BUILD_FLAGS) -o build/$(ETHERMINT_CLI_BINARY) ./cmd/$(ETHERMINT_CLI_BINARY)
 endif
 
-build-ethermint: go.sum
+build-impactchain: go.sum
 	mkdir -p $(BUILDDIR)
 	go build -mod=readonly $(BUILD_FLAGS) -o $(BUILDDIR) ./cmd/$(ETHERMINT_DAEMON_BINARY)
 	go build -mod=readonly $(BUILD_FLAGS) -o $(BUILDDIR) ./cmd/$(ETHERMINT_CLI_BINARY)
 
-build-ethermint-linux: go.sum
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=1 $(MAKE) build-ethermint
+build-impactchain-linux: go.sum
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=1 $(MAKE) build-impactchain
 
-.PHONY: build build-ethermint build-ethermint-linux
+.PHONY: build build-impactchain build-impactchain-linux
 
 install:
 	${GO_MOD} go install $(BUILD_FLAGS) ./cmd/$(ETHERMINT_DAEMON_BINARY)
@@ -160,16 +160,16 @@ docker-build:
 	docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
 	# docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:${COMMIT_HASH}
 	# update old container
-	docker rm ethermint || true
+	docker rm impactchain || true
 	# create a new container from the latest image
-	docker create --name ethermint -t -i cosmos/ethermint:latest ethermint
+	docker create --name impactchain -t -i cosmos/impactchain:latest impactchain
 	# move the binaries to the ./build directory
 	mkdir -p ./build/
-	docker cp ethermint:/usr/bin/ethermintd ./build/ ; \
-	docker cp ethermint:/usr/bin/ethermintcli ./build/
+	docker cp impactchain:/usr/bin/impactchaind ./build/ ; \
+	docker cp impactchain:/usr/bin/impactchaincli ./build/
 
 docker-localnet:
-	docker build -f ./networks/local/ethermintnode/Dockerfile . -t ethermintd/node
+	docker build -f ./networks/local/impactchainnode/Dockerfile . -t impactchaind/node
 
 ###############################################################################
 ###                          Tools & Dependencies                           ###
@@ -336,7 +336,7 @@ format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/tendermint
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/ethereum/go-ethereum
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/cosmos/cosmos-sdk
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/cosmos/ethermint
+	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/mendozg/impactchain
 
 .PHONY: lint format
 
@@ -421,14 +421,14 @@ docs-build:
 	yarn run build
 
 godocs:
-	@echo "--> Wait a few seconds and visit http://localhost:6060/pkg/github.com/cosmos/ethermint"
+	@echo "--> Wait a few seconds and visit http://localhost:6060/pkg/github.com/mendozg/impactchain"
 	godoc -http=:6060
 
 ###############################################################################
 ###                                Localnet                                 ###
 ###############################################################################
 
-build-docker-local-ethermint:
+build-docker-local-impactchain:
 	@$(MAKE) -C networks/local
 
 # Run a 4-node testnet locally
@@ -437,13 +437,13 @@ ifeq ($(OS),Windows_NT)
 	mkdir build &
 	@$(MAKE) docker-localnet
 
-	IF not exist "build/node0/$(ETHERMINT_DAEMON_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "ethermintd testnet --v 4 -o /ethermint --starting-ip-address 192.168.10.2 --keyring-backend=test"
+	IF not exist "build/node0/$(ETHERMINT_DAEMON_BINARY)/config/genesis.json" docker run --rm -v $(CURDIR)/build\impactchain\Z impactchaind/node "impactchaind testnet --v 4 -o /impactchain --starting-ip-address 192.168.10.2 --keyring-backend=test"
 	docker-compose up -d
 else
 	mkdir -p ./build/
 	@$(MAKE) docker-localnet
 
-	if ! [ -f build/node0/$(ETHERMINT_DAEMON_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/ethermint:Z ethermintd/node "ethermintd testnet --v 4 -o /ethermint --starting-ip-address 192.168.10.2 --keyring-backend=test"; fi
+	if ! [ -f build/node0/$(ETHERMINT_DAEMON_BINARY)/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/impactchain:Z impactchaind/node "impactchaind testnet --v 4 -o /impactchain --starting-ip-address 192.168.10.2 --keyring-backend=test"; fi
 	docker-compose up -d
 endif
 
@@ -459,15 +459,15 @@ localnet-clean:
 localnet-unsafe-reset:
 	docker-compose down
 ifeq ($(OS),Windows_NT)
-	@docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "ethermintd unsafe-reset-all --home=/ethermint/node0/ethermintd"
-	@docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "ethermintd unsafe-reset-all --home=/ethermint/node1/ethermintd"
-	@docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "ethermintd unsafe-reset-all --home=/ethermint/node2/ethermintd"
-	@docker run --rm -v $(CURDIR)/build\ethermint\Z ethermintd/node "ethermintd unsafe-reset-all --home=/ethermint/node3/ethermintd"
+	@docker run --rm -v $(CURDIR)/build\impactchain\Z impactchaind/node "impactchaind unsafe-reset-all --home=/impactchain/node0/impactchaind"
+	@docker run --rm -v $(CURDIR)/build\impactchain\Z impactchaind/node "impactchaind unsafe-reset-all --home=/impactchain/node1/impactchaind"
+	@docker run --rm -v $(CURDIR)/build\impactchain\Z impactchaind/node "impactchaind unsafe-reset-all --home=/impactchain/node2/impactchaind"
+	@docker run --rm -v $(CURDIR)/build\impactchain\Z impactchaind/node "impactchaind unsafe-reset-all --home=/impactchain/node3/impactchaind"
 else
-	@docker run --rm -v $(CURDIR)/build:/ethermint:Z ethermintd/node "ethermintd unsafe-reset-all --home=/ethermint/node0/ethermintd"
-	@docker run --rm -v $(CURDIR)/build:/ethermint:Z ethermintd/node "ethermintd unsafe-reset-all --home=/ethermint/node1/ethermintd"
-	@docker run --rm -v $(CURDIR)/build:/ethermint:Z ethermintd/node "ethermintd unsafe-reset-all --home=/ethermint/node2/ethermintd"
-	@docker run --rm -v $(CURDIR)/build:/ethermint:Z ethermintd/node "ethermintd unsafe-reset-all --home=/ethermint/node3/ethermintd"
+	@docker run --rm -v $(CURDIR)/build:/impactchain:Z impactchaind/node "impactchaind unsafe-reset-all --home=/impactchain/node0/impactchaind"
+	@docker run --rm -v $(CURDIR)/build:/impactchain:Z impactchaind/node "impactchaind unsafe-reset-all --home=/impactchain/node1/impactchaind"
+	@docker run --rm -v $(CURDIR)/build:/impactchain:Z impactchaind/node "impactchaind unsafe-reset-all --home=/impactchain/node2/impactchaind"
+	@docker run --rm -v $(CURDIR)/build:/impactchain:Z impactchaind/node "impactchaind unsafe-reset-all --home=/impactchain/node3/impactchaind"
 endif
 
-.PHONY: build-docker-local-ethermint localnet-start localnet-stop
+.PHONY: build-docker-local-impactchain localnet-start localnet-stop

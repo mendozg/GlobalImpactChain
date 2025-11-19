@@ -10,7 +10,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/vm"
 
-	ethermint "github.com/cosmos/ethermint/types"
+	impactchain "github.com/mendozg/impactchain/types"
 )
 
 const (
@@ -57,7 +57,7 @@ func NewParams(evmDenom string, enableCreate, enableCall bool, extraEIPs ...int6
 // DefaultParams returns default evm parameters
 func DefaultParams() Params {
 	return Params{
-		EvmDenom:     ethermint.AttoPhoton,
+		EvmDenom:     impactchain.AttoPhoton,
 		EnableCreate: true,
 		EnableCall:   true,
 		ExtraEIPs:    []int64(nil), // TODO: define default values

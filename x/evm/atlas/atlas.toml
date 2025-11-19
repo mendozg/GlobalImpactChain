@@ -1,16 +1,16 @@
 [module]
 description = "The evm module executes Ethereum Virtual Machine (EVM) state transitions."
-homepage = "https://github.com/cosmos/ethermint"
+homepage = "https://github.com/mendozg/impactchain"
 keywords = [
   "evm",
   "ethereum",
-  "ethermint",
+  "impactchain",
 ]
 
 name = "x/evm"
 
 [bug_tracker]
-url = "https://github.com/cosmos/ethermint/issues"
+url = "https://github.com/mendozg/impactchain/issues"
 
 [[authors]]
 name = "fedekunze"
@@ -28,7 +28,7 @@ name = "noot"
 name = "araskachoi"
 
 [version]
-documentation = "https://raw.githubusercontent.com/cosmos/ethermint/development/x/evm/atlas/atlas-v0.3.1.md"
-repo = "https://github.com/cosmos/ethermint/releases/tag/v0.3.1"
+documentation = "https://raw.githubusercontent.com/cosmos/impactchain/development/x/evm/atlas/atlas-v0.3.1.md"
+repo = "https://github.com/mendozg/impactchain/releases/tag/v0.3.1"
 sdk_compat = "v0.39.x"
 version = "v0.3.1"

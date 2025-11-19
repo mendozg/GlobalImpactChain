@@ -23,11 +23,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	"github.com/cosmos/cosmos-sdk/x/params"
 
-	"github.com/cosmos/ethermint/core"
-	cryptocodec "github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	"github.com/cosmos/ethermint/types"
-	"github.com/cosmos/ethermint/x/evm"
-	evmtypes "github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/core"
+	cryptocodec "github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	"github.com/mendozg/impactchain/types"
+	"github.com/mendozg/impactchain/x/evm"
+	evmtypes "github.com/mendozg/impactchain/x/evm/types"
 
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/consensus/ethash"
@@ -104,7 +104,7 @@ func createAndTestGenesis(t *testing.T, cms sdk.CommitMultiStore, ak auth.Accoun
 	ms := cms.CacheMultiStore()
 	ctx := sdk.NewContext(ms, abci.Header{}, false, logger)
 
-	// Set the default Ethermint parameters to the parameter keeper store
+	// Set the default Impactchain parameters to the parameter keeper store
 	evmKeeper.SetParams(ctx, evmtypes.DefaultParams())
 
 	// sort the addresses and insertion of key/value pairs matters

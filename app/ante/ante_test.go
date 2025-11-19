@@ -14,10 +14,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/cosmos/ethermint/app"
-	"github.com/cosmos/ethermint/app/ante"
-	"github.com/cosmos/ethermint/types"
-	evmtypes "github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/app"
+	"github.com/mendozg/impactchain/app/ante"
+	"github.com/mendozg/impactchain/types"
+	evmtypes "github.com/mendozg/impactchain/x/evm/types"
 )
 
 func requireValidTx(
@@ -180,7 +180,7 @@ func (suite *AnteTestSuite) TestEthInvalidSig() {
 	tx, err := newTestEthTx(suite.ctx, ethMsg, priv1)
 	suite.Require().NoError(err)
 
-	ctx := suite.ctx.WithChainID("ethermint-4")
+	ctx := suite.ctx.WithChainID("impactchain-4")
 	requireInvalidTx(suite.T(), suite.anteHandler, ctx, tx, false)
 }
 
@@ -253,7 +253,7 @@ func (suite *AnteTestSuite) TestEthInvalidIntrinsicGas() {
 func (suite *AnteTestSuite) TestEthInvalidMempoolFees() {
 	// setup app with checkTx = true
 	suite.app = app.Setup(true)
-	suite.ctx = suite.app.BaseApp.NewContext(true, abci.Header{Height: 1, ChainID: "ethermint-3", Time: time.Now().UTC()})
+	suite.ctx = suite.app.BaseApp.NewContext(true, abci.Header{Height: 1, ChainID: "impactchain-3", Time: time.Now().UTC()})
 	suite.app.EvmKeeper.SetParams(suite.ctx, evmtypes.DefaultParams())
 
 	suite.anteHandler = ante.NewAnteHandler(suite.app.AccountKeeper, suite.app.EvmKeeper, suite.app.SupplyKeeper)

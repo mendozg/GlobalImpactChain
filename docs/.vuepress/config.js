@@ -1,6 +1,6 @@
 module.exports = {
   theme: 'cosmos',
-  title: 'Ethermint Documentation',
+  title: 'Impactchain Documentation',
   locales: {
     '/': {
       lang: 'en-US'
@@ -8,8 +8,8 @@ module.exports = {
   },
   base: process.env.VUEPRESS_BASE || '/',
   themeConfig: {
-    repo: 'cosmos/ethermint',
-    docsRepo: 'cosmos/ethermint',
+    repo: 'cosmos/impactchain',
+    docsRepo: 'cosmos/impactchain',
     docsBranch: 'development',
     docsDir: 'docs',
     editLinks: true,
@@ -20,7 +20,7 @@ module.exports = {
     algolia: {
       id: 'BH4D9OD16A',
       key: 'c5da4dd3636828292e3c908a0db39688',
-      index: 'ethermint'
+      index: 'impactchain'
     },
     topbar: {
       banner: false
@@ -66,8 +66,8 @@ module.exports = {
         }, {
           title: 'Resources',
           children: [{
-              title: 'Ethermint API Reference',
-              path: 'https://godoc.org/github.com/cosmos/ethermint'
+              title: 'Impactchain API Reference',
+              path: 'https://godoc.org/github.com/mendozg/impactchain'
             },
             {
               title: 'Cosmos REST API Spec',
@@ -85,13 +85,13 @@ module.exports = {
       title: 'Help & Support',
       chat: {
         title: 'Developer Chat',
-        text: 'Chat with Ethermint developers on Discord.',
+        text: 'Chat with Impactchain developers on Discord.',
         url: 'https://discordapp.com/channels/669268347736686612',
         bg: 'linear-gradient(103.75deg, #1B1E36 0%, #22253F 100%)'
       },
       forum: {
-        title: 'Ethermint Developer Forum',
-        text: 'Join the Ethermint Developer Forum to learn more.',
+        title: 'Impactchain Developer Forum',
+        text: 'Join the Impactchain Developer Forum to learn more.',
         url: 'https://forum.cosmos.network/',
         bg: 'linear-gradient(221.79deg, #3D6B99 -1.08%, #336699 95.88%)',
         logo: 'ethereum-white'
@@ -105,12 +105,12 @@ module.exports = {
     footer: {
       logo: '/logo-bw.svg',
       textLink: {
-        text: 'ethermint.zone',
-        url: 'https://ethermint.zone'
+        text: 'impactchain.zone',
+        url: 'https://impactchain.zone'
       },
       services: [{
           service: 'github',
-          url: 'https://github.com/cosmos/ethermint'
+          url: 'https://github.com/mendozg/impactchain'
         },
         {
           service: 'twitter',
@@ -133,7 +133,7 @@ module.exports = {
               url: 'https://docs.cosmos.network'
             },
             {
-              title: 'Ethermint Docs',
+              title: 'Impactchain Docs',
               url: 'https://ethereum.org/developers'
             },
             {
@@ -149,8 +149,8 @@ module.exports = {
               url: 'https://discord.gg/W8trcGV'
             },
             {
-              title: 'Ethermint Forum',
-              url: 'https://forum.cosmos.network/c/ethermint'
+              title: 'Impactchain Forum',
+              url: 'https://forum.cosmos.network/c/impactchain'
             },
             {
               title: 'ChainSafe Blog',
@@ -162,14 +162,14 @@ module.exports = {
           title: 'Contributing',
           children: [{
               title: 'Contributing to the docs',
-              url: 'https://github.com/cosmos/ethermint/tree/development/docs'
+              url: 'https://github.com/mendozg/impactchain/tree/development/docs'
             },
             {
               title: 'Careers at ChainSafe',
               url: 'https://chainsafe.io/#careers'
             }, {
               title: 'Source code on GitHub',
-              url: 'https://github.com/cosmos/ethermint/blob/development/docs/DOCS_README.md'
+              url: 'https://github.com/mendozg/impactchain/blob/development/docs/DOCS_README.md'
             }
           ]
         }

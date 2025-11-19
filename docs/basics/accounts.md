@@ -4,24 +4,24 @@ order: 1
 
 # Accounts
 
-This document describes the in-built accounts system of Ethermint. {synopsis}
+This document describes the in-built accounts system of Impactchain. {synopsis}
 
 ## Pre-requisite Readings
 
 - [Cosmos SDK Accounts](https://docs.cosmos.network/master/basics/accounts.html) {prereq}
 - [Ethereum Accounts](https://ethereum.org/en/whitepaper/#ethereum-accounts) {prereq}
 
-## Ethermint Accounts
+## Impactchain Accounts
 
-Ethermint defines its own custom `Account` type that uses Ethereum's ECDSA secp256k1 curve for keys. This
+Impactchain defines its own custom `Account` type that uses Ethereum's ECDSA secp256k1 curve for keys. This
 satisfies the [EIP84](https://github.com/ethereum/EIPs/issues/84) for full [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) paths.
-The root HD path for Ethermint-based accounts is `m/44'/60'/0'/0`.
+The root HD path for Impactchain-based accounts is `m/44'/60'/0'/0`.
 
-+++ https://github.com/cosmos/ethermint/blob/v0.1.0/types/account.go#L31-L36
++++ https://github.com/mendozg/impactchain/blob/v0.1.0/types/account.go#L31-L36
 
 ## Addresses and Public Keys
 
-There are 3 main types of `Addresses`/`PubKeys` available by default on Ethermint:
+There are 3 main types of `Addresses`/`PubKeys` available by default on Impactchain:
 
 - Addresses and Keys for **accounts**, which identify users (e.g. the sender of a `message`). They are derived using the **`eth_secp256k1`** curve.
 - Addresses and Keys for **validator operators**, which identify the operators of validators. They are derived using the **`eth_secp256k1`** curve.
@@ -49,7 +49,7 @@ You can query an account address using the Cosmos CLI or REST clients:
 
 ```bash
 # NOTE: the --output (-o) flag will define the output format in JSON or YAML (text)
-ethermintcli q auth account $(ethermintcli keys show <MYKEY> -a) -o text
+impactchaincli q auth account $(impactchaincli keys show <MYKEY> -a) -o text
 |
   address: eth1f8rqrfwut7ngkxwth0gt99h0lxnxsp09ngvzwl
   eth_address: 0x49c601A5DC5FA68b19CBbbd0b296eFF9a66805e5
@@ -70,7 +70,7 @@ curl -X GET "<NODE_IP>/auth/accounts/eth1f8rqrfwut7ngkxwth0gt99h0lxnxsp09ngvzwl"
 ```
 
 ::: tip
-The Cosmos SDK Keyring output (i.e `ethermintcli keys`) only supports addresses and public keys in Bech32 format.
+The Cosmos SDK Keyring output (i.e `impactchaincli keys`) only supports addresses and public keys in Bech32 format.
 :::
 
 To retrieve the Ethereum hex address using Web3, use the JSON-RPC [`eth_accounts`](./json_rpc.md#eth-accounts) endpoint:
@@ -82,4 +82,4 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":1
 
 ## Next {hide}
 
-Learn about Ethermint [transactions](./transactions.md) {hide}
+Learn about Impactchain [transactions](./transactions.md) {hide}

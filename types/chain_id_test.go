@@ -16,7 +16,7 @@ func TestParseChainID(t *testing.T) {
 		expInt   *big.Int
 	}{
 		{
-			"valid chain-id, single digit", "ethermint-1", false, big.NewInt(1),
+			"valid chain-id, single digit", "impactchain-1", false, big.NewInt(1),
 		},
 		{
 			"valid chain-id, multiple digits", "aragonchain-256", false, big.NewInt(256),
@@ -34,22 +34,22 @@ func TestParseChainID(t *testing.T) {
 			"invalid chain-id, uppercases", "ETHERMINT-1", true, nil,
 		},
 		{
-			"invalid chain-id, mixed cases", "Ethermint-1", true, nil,
+			"invalid chain-id, mixed cases", "Impactchain-1", true, nil,
 		},
 		{
 			"invalid chain-id, special chars", "$&*#!-1", true, nil,
 		},
 		{
-			"invalid epoch, cannot start with 0", "ethermint-001", true, nil,
+			"invalid epoch, cannot start with 0", "impactchain-001", true, nil,
 		},
 		{
-			"invalid epoch, cannot invalid base", "ethermint-0x212", true, nil,
+			"invalid epoch, cannot invalid base", "impactchain-0x212", true, nil,
 		},
 		{
-			"invalid epoch, non-integer", "ethermint-ethermint", true, nil,
+			"invalid epoch, non-integer", "impactchain-impactchain", true, nil,
 		},
 		{
-			"invalid epoch, undefined", "ethermint-", true, nil,
+			"invalid epoch, undefined", "impactchain-", true, nil,
 		},
 		{
 			"blank chain ID", " ", true, nil,
@@ -58,7 +58,7 @@ func TestParseChainID(t *testing.T) {
 			"empty chain ID", "", true, nil,
 		},
 		{
-			"long chain-id", "ethermint-" + strings.Repeat("1", 40), true, nil,
+			"long chain-id", "impactchain-" + strings.Repeat("1", 40), true, nil,
 		},
 	}
 

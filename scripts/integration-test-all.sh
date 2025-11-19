@@ -14,10 +14,10 @@ RPC_PORT="854"
 IP_ADDR="0.0.0.0"
 
 KEY="mykey"
-CHAINID="ethermint-2"
+CHAINID="impactchain-2"
 MONIKER="mymoniker"
 
-## default port prefixes for ethermintd
+## default port prefixes for impactchaind
 NODE_P2P_PORT="2660"
 NODE_PORT="2663"
 NODE_RPC_PORT="2666"
@@ -47,23 +47,23 @@ done
 
 set -euxo pipefail
 
-DATA_DIR=$(mktemp -d -t ethermint-datadir.XXXXX)
+DATA_DIR=$(mktemp -d -t impactchain-datadir.XXXXX)
 
 if [[ ! "$DATA_DIR" ]]; then
     echo "Could not create $DATA_DIR"
     exit 1
 fi
 
-DATA_CLI_DIR=$(mktemp -d -t ethermint-cli-datadir.XXXXX)
+DATA_CLI_DIR=$(mktemp -d -t impactchain-cli-datadir.XXXXX)
 
 if [[ ! "$DATA_CLI_DIR" ]]; then
     echo "Could not create $DATA_CLI_DIR"
     exit 1
 fi
 
-# Compile ethermint
-echo "compiling ethermint"
-make build-ethermint
+# Compile impactchain
+echo "compiling impactchain"
+make build-impactchain
 
 # PID array declaration
 arr=()
@@ -73,25 +73,25 @@ arrcli=()
 
 init_func() {
     echo "create and add new keys"
-    "$PWD"/build/ethermintcli config keyring-backend test --home "$DATA_CLI_DIR$i"
-    "$PWD"/build/ethermintcli keys add $KEY"$i" --home "$DATA_CLI_DIR$i" --no-backup --chain-id $CHAINID
-    echo "init Ethermint with moniker=$MONIKER and chain-id=$CHAINID"
-    "$PWD"/build/ethermintd init $MONIKER --chain-id $CHAINID --home "$DATA_DIR$i"
-    echo "init ethermintcli with chain-id=$CHAINID and config it trust-node true"
-    "$PWD"/build/ethermintcli config chain-id $CHAINID --home "$DATA_CLI_DIR$i"
-    "$PWD"/build/ethermintcli config output json --home "$DATA_CLI_DIR$i"
-    "$PWD"/build/ethermintcli config indent true --home "$DATA_CLI_DIR$i"
-    "$PWD"/build/ethermintcli config trust-node true --home "$DATA_CLI_DIR$i"
+    "$PWD"/build/impactchaincli config keyring-backend test --home "$DATA_CLI_DIR$i"
+    "$PWD"/build/impactchaincli keys add $KEY"$i" --home "$DATA_CLI_DIR$i" --no-backup --chain-id $CHAINID
+    echo "init Impactchain with moniker=$MONIKER and chain-id=$CHAINID"
+    "$PWD"/build/impactchaind init $MONIKER --chain-id $CHAINID --home "$DATA_DIR$i"
+    echo "init impactchaincli with chain-id=$CHAINID and config it trust-node true"
+    "$PWD"/build/impactchaincli config chain-id $CHAINID --home "$DATA_CLI_DIR$i"
+    "$PWD"/build/impactchaincli config output json --home "$DATA_CLI_DIR$i"
+    "$PWD"/build/impactchaincli config indent true --home "$DATA_CLI_DIR$i"
+    "$PWD"/build/impactchaincli config trust-node true --home "$DATA_CLI_DIR$i"
     echo "prepare genesis: Allocate genesis accounts"
-    "$PWD"/build/ethermintd add-genesis-account \
-    "$("$PWD"/build/ethermintcli keys show "$KEY$i" -a --home "$DATA_CLI_DIR$i" )" 1000000000000000000aphoton,1000000000000000000stake \
+    "$PWD"/build/impactchaind add-genesis-account \
+    "$("$PWD"/build/impactchaincli keys show "$KEY$i" -a --home "$DATA_CLI_DIR$i" )" 1000000000000000000aphoton,1000000000000000000stake \
     --home "$DATA_DIR$i" --home-client "$DATA_CLI_DIR$i"
     echo "prepare genesis: Sign genesis transaction"
-    "$PWD"/build/ethermintd gentx --name $KEY"$i" --keyring-backend test --home "$DATA_DIR$i" --home-client "$DATA_CLI_DIR$i"
+    "$PWD"/build/impactchaind gentx --name $KEY"$i" --keyring-backend test --home "$DATA_DIR$i" --home-client "$DATA_CLI_DIR$i"
     echo "prepare genesis: Collect genesis tx"
-    "$PWD"/build/ethermintd collect-gentxs --home "$DATA_DIR$i"
+    "$PWD"/build/impactchaind collect-gentxs --home "$DATA_DIR$i"
     echo "prepare genesis: Run validate-genesis to ensure everything worked and that the genesis file is setup correctly"
-    "$PWD"/build/ethermintd validate-genesis --home "$DATA_DIR$i"
+    "$PWD"/build/impactchaind validate-genesis --home "$DATA_DIR$i"
 
     if [[ $MODE == "pending" ]]; then
         ls $DATA_DIR$i
@@ -107,27 +107,27 @@ init_func() {
 }
 
 start_func() {
-    echo "starting ethermint node $i in background ..."
-    "$PWD"/build/ethermintd start --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" \
+    echo "starting impactchain node $i in background ..."
+    "$PWD"/build/impactchaind start --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" \
     --p2p.laddr tcp://$IP_ADDR:$NODE_P2P_PORT"$i" --address tcp://$IP_ADDR:$NODE_PORT"$i" --rpc.laddr tcp://$IP_ADDR:$NODE_RPC_PORT"$i" \
     --home "$DATA_DIR$i" \
     >"$DATA_DIR"/node"$i".log 2>&1 & disown
     
     ETHERMINT_PID=$!
-    echo "started ethermint node, pid=$ETHERMINT_PID"
+    echo "started impactchain node, pid=$ETHERMINT_PID"
     # add PID to array
     arr+=("$ETHERMINT_PID")
 }
 
 start_cli_func() {
-    echo "starting ethermint node $i in background ..."
-    "$PWD"/build/ethermintcli rest-server --unlock-key $KEY"$i" --chain-id $CHAINID --trace --rpc-api="web3,eth,net,personal" \
+    echo "starting impactchain node $i in background ..."
+    "$PWD"/build/impactchaincli rest-server --unlock-key $KEY"$i" --chain-id $CHAINID --trace --rpc-api="web3,eth,net,personal" \
     --laddr "tcp://localhost:$RPC_PORT$i" --node tcp://$IP_ADDR:$NODE_RPC_PORT"$i" \
     --home "$DATA_CLI_DIR$i" --read-timeout 30 --write-timeout 30 \
     >"$DATA_CLI_DIR"/cli"$i".log 2>&1 & disown
     
     ETHERMINT_CLI_PID=$!
-    echo "started ethermintcli node, pid=$ETHERMINT_CLI_PID"
+    echo "started impactchaincli node, pid=$ETHERMINT_CLI_PID"
     # add PID to array
     arrcli+=("$ETHERMINT_CLI_PID")
 }
@@ -154,7 +154,7 @@ if [[ -z $TEST || $TEST == "rpc" || $TEST == "pending" ]]; then
 
     for i in $(seq 1 "$TEST_QTD"); do
         HOST_RPC=http://$IP_ADDR:$RPC_PORT"$i"
-        echo "going to test ethermint node $HOST_RPC ..."
+        echo "going to test impactchain node $HOST_RPC ..."
         if [[ $MODE == "pending" ]]; then
             sleep 150
             MODE=$MODE HOST=$HOST_RPC go test -v ./tests/tests-pending/rpc_pending_test.go
@@ -171,7 +171,7 @@ stop_func() {
     ETHERMINT_PID=$i
     echo "shutting down node, pid=$ETHERMINT_PID ..."
     
-    # Shutdown ethermint node
+    # Shutdown impactchain node
     kill -9 "$ETHERMINT_PID"
     wait "$ETHERMINT_PID"
 }

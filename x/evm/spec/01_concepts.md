@@ -12,7 +12,7 @@ that provides the necessary tools to run or create a contract on a given state.
 ## State DB
 
 The `StateDB` interface from geth represents an EVM database for full state querying of both
-contracts and accounts. The concrete type that fulfills this interface on Ethermint is the
+contracts and accounts. The concrete type that fulfills this interface on Impactchain is the
 `CommitStateDB`.
 
 ## State Object
@@ -27,12 +27,12 @@ The usage pattern is as follows:
 
 The `x/evm` module `GenesisState` defines the state necessary for initializing the chain from a previous exported height.
 
-+++ https://github.com/cosmos/ethermint/blob/v0.3.1/x/evm/types/genesis.go#L14-L20
++++ https://github.com/mendozg/impactchain/blob/v0.3.1/x/evm/types/genesis.go#L14-L20
 
 ### Genesis Accounts
 
 The `GenesisAccount` type corresponds to an adaptation of the Ethereum `GenesisAccount` type. Its
-main difference is that the one on Ethermint uses a custom `Storage` type that uses a slice instead
+main difference is that the one on Impactchain uses a custom `Storage` type that uses a slice instead
 of maps for the evm `State` (due to non-determinism), and that it doesn't contain the private key
 field.
 
@@ -42,11 +42,11 @@ module `AccountKeeper` and the balance must match the balance of the `EvmDenom` 
 defined on the `GenesisState`'s `Param`. The values for the address and the balance amount maintain
 the same format as the ones from the SDK to make manual inspections easier on the genesis.json.
 
-+++ https://github.com/cosmos/ethermint/blob/v0.3.1/x/evm/types/genesis.go#L22-L30
++++ https://github.com/mendozg/impactchain/blob/v0.3.1/x/evm/types/genesis.go#L22-L30
 
 ### Transaction Logs
 
-On every Ethermint transaction, its result contains the Ethereum `Log`s from the state machine
+On every Impactchain transaction, its result contains the Ethereum `Log`s from the state machine
 execution that are used by the JSON-RPC Web3 server for for filter querying. Since Cosmos upgrades
 don't persist the transactions on the blockchain state, we need to persist the logs the EVM module
 state to prevent the queries from failing.
@@ -54,7 +54,7 @@ state to prevent the queries from failing.
 `TxsLogs` is the field that contains all the transaction logs that need to be persisted after an
 upgrade. It uses an array instead of a map to ensure determinism on the iteration.
 
-+++ https://github.com/cosmos/ethermint/blob/v0.3.1/x/evm/types/logs.go#L12-L18
++++ https://github.com/mendozg/impactchain/blob/v0.3.1/x/evm/types/logs.go#L12-L18
 
 ### Chain Config
 
@@ -70,7 +70,7 @@ to a past block).
 
 If you want to update the config values, use an software upgrade procedure.
 
-+++ https://github.com/cosmos/ethermint/blob/v0.3.1/x/evm/types/chain_config.go#L16-L45
++++ https://github.com/mendozg/impactchain/blob/v0.3.1/x/evm/types/chain_config.go#L16-L45
 
 ### Params
 

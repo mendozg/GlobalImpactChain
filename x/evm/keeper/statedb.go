@@ -3,7 +3,7 @@ package keeper
 import (
 	"math/big"
 
-	"github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/x/evm/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 

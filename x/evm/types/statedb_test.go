@@ -14,10 +14,10 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 
-	"github.com/cosmos/ethermint/app"
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
-	"github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/app"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
+	"github.com/mendozg/impactchain/x/evm/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -26,7 +26,7 @@ type StateDBTestSuite struct {
 	suite.Suite
 
 	ctx         sdk.Context
-	app         *app.EthermintApp
+	app         *app.ImpactchainApp
 	stateDB     *types.CommitStateDB
 	address     ethcmn.Address
 	stateObject types.StateObject
@@ -40,7 +40,7 @@ func (suite *StateDBTestSuite) SetupTest() {
 	checkTx := false
 
 	suite.app = app.Setup(checkTx)
-	suite.ctx = suite.app.BaseApp.NewContext(checkTx, abci.Header{Height: 1, ChainID: "ethermint-1"})
+	suite.ctx = suite.app.BaseApp.NewContext(checkTx, abci.Header{Height: 1, ChainID: "impactchain-1"})
 	suite.stateDB = suite.app.EvmKeeper.CommitStateDB.WithContext(suite.ctx)
 
 	privkey, err := ethsecp256k1.GenerateKey()
@@ -48,8 +48,8 @@ func (suite *StateDBTestSuite) SetupTest() {
 
 	suite.address = ethcmn.BytesToAddress(privkey.PubKey().Address().Bytes())
 
-	balance := sdk.NewCoins(ethermint.NewPhotonCoin(sdk.ZeroInt()))
-	acc := &ethermint.EthAccount{
+	balance := sdk.NewCoins(impactchain.NewPhotonCoin(sdk.ZeroInt()))
+	acc := &impactchain.EthAccount{
 		BaseAccount: auth.NewBaseAccount(sdk.AccAddress(suite.address.Bytes()), balance, nil, 0, 0),
 		CodeHash:    ethcrypto.Keccak256(nil),
 	}
@@ -564,7 +564,7 @@ func (suite *StateDBTestSuite) TestCommitStateDB_Commit() {
 		}
 
 		suite.Require().NotNil(acc, tc.name)
-		ethAcc, ok := acc.(*ethermint.EthAccount)
+		ethAcc, ok := acc.(*impactchain.EthAccount)
 		suite.Require().True(ok)
 		suite.Require().Equal(ethcrypto.Keccak256([]byte("code")), ethAcc.CodeHash)
 	}

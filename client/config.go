@@ -12,7 +12,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
 
-	ethermint "github.com/cosmos/ethermint/types"
+	impactchain "github.com/mendozg/impactchain/types"
 )
 
 // InitConfig adds the chain-id, encoding and output flags to the persistent flag set.
@@ -51,7 +51,7 @@ func ValidateChainID(baseCmd *cobra.Command) *cobra.Command {
 	validateFn := func(cmd *cobra.Command, args []string) error {
 		chainID := viper.GetString(flags.FlagChainID)
 
-		if !ethermint.IsValidChainID(chainID) {
+		if !impactchain.IsValidChainID(chainID) {
 			return fmt.Errorf("invalid chain-id format: %s", chainID)
 		}
 
@@ -73,7 +73,7 @@ func GenerateChainID(baseCmd *cobra.Command) *cobra.Command {
 		chainID := viper.GetString(flags.FlagChainID)
 
 		if chainID == "" {
-			viper.Set(flags.FlagChainID, ethermint.GenerateRandomChainID())
+			viper.Set(flags.FlagChainID, impactchain.GenerateRandomChainID())
 		}
 		return baseRunE(cmd, args)
 	}

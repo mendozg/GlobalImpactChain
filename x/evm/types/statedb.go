@@ -10,7 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/params"
 
-	ethermint "github.com/cosmos/ethermint/types"
+	impactchain "github.com/mendozg/impactchain/types"
 
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	ethstate "github.com/ethereum/go-ethereum/core/state"
@@ -455,7 +455,7 @@ func (csdb *CommitStateDB) HasSuicided(addr ethcmn.Address) bool {
 	return false
 }
 
-// StorageTrie returns nil as the state in Ethermint does not use a direct
+// StorageTrie returns nil as the state in Impactchain does not use a direct
 // storage trie.
 func (csdb *CommitStateDB) StorageTrie(addr ethcmn.Address) ethstate.Trie {
 	return nil
@@ -636,7 +636,7 @@ func (csdb *CommitStateDB) RevertToSnapshot(revID int) {
 // ----------------------------------------------------------------------------
 
 // Database retrieves the low level database supporting the lower level trie
-// ops. It is not used in Ethermint, so it returns nil.
+// ops. It is not used in Impactchain, so it returns nil.
 func (csdb *CommitStateDB) Database() ethstate.Database {
 	return nil
 }
@@ -704,7 +704,7 @@ func (csdb *CommitStateDB) Reset(_ ethcmn.Hash) error {
 func (csdb *CommitStateDB) UpdateAccounts() {
 	for _, stateEntry := range csdb.stateObjects {
 		currAcc := csdb.accountKeeper.GetAccount(csdb.ctx, sdk.AccAddress(stateEntry.address.Bytes()))
-		ethermintAcc, ok := currAcc.(*ethermint.EthAccount)
+		impactchainAcc, ok := currAcc.(*impactchain.EthAccount)
 		if !ok {
 			continue
 		}
@@ -712,12 +712,12 @@ func (csdb *CommitStateDB) UpdateAccounts() {
 		evmDenom := csdb.GetParams().EvmDenom
 		balance := sdk.Coin{
 			Denom:  evmDenom,
-			Amount: ethermintAcc.GetCoins().AmountOf(evmDenom),
+			Amount: impactchainAcc.GetCoins().AmountOf(evmDenom),
 		}
 
 		if stateEntry.stateObject.Balance() != balance.Amount.BigInt() && balance.IsValid() ||
-			stateEntry.stateObject.Nonce() != ethermintAcc.GetSequence() {
-			stateEntry.stateObject.account = ethermintAcc
+			stateEntry.stateObject.Nonce() != impactchainAcc.GetSequence() {
+			stateEntry.stateObject.account = impactchainAcc
 		}
 	}
 }

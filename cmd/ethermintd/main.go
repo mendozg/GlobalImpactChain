@@ -27,11 +27,11 @@ import (
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
-	"github.com/cosmos/ethermint/app"
-	"github.com/cosmos/ethermint/client"
-	"github.com/cosmos/ethermint/codec"
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
+	"github.com/mendozg/impactchain/app"
+	"github.com/mendozg/impactchain/client"
+	"github.com/mendozg/impactchain/codec"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
 )
 
 const flagInvCheckPeriod = "inv-check-period"
@@ -52,15 +52,15 @@ func main() {
 	clientkeys.KeysCdc = cdc
 
 	config := sdk.GetConfig()
-	ethermint.SetBech32Prefixes(config)
-	ethermint.SetBip44CoinType(config)
+	impactchain.SetBech32Prefixes(config)
+	impactchain.SetBip44CoinType(config)
 	config.Seal()
 
 	ctx := server.NewDefaultContext()
 
 	rootCmd := &cobra.Command{
-		Use:               "ethermintd",
-		Short:             "Ethermint App Daemon (server)",
+		Use:               "impactchaind",
+		Short:             "Impactchain App Daemon (server)",
 		PersistentPreRunE: server.PersistentPreRunEFn(ctx),
 	}
 	// CLI commands to initialize the chain
@@ -97,7 +97,7 @@ func main() {
 }
 
 func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application {
-	return app.NewEthermintApp(
+	return app.NewImpactchainApp(
 		logger,
 		db,
 		traceStore,
@@ -113,17 +113,17 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application
 func exportAppStateAndTMValidators(
 	logger log.Logger, db dbm.DB, traceStore io.Writer, height int64, forZeroHeight bool, jailWhiteList []string,
 ) (json.RawMessage, []tmtypes.GenesisValidator, error) {
-	var ethermintApp *app.EthermintApp
+	var impactchainApp *app.ImpactchainApp
 
 	if height != -1 {
-		ethermintApp = app.NewEthermintApp(logger, db, traceStore, false, map[int64]bool{}, 0)
+		impactchainApp = app.NewImpactchainApp(logger, db, traceStore, false, map[int64]bool{}, 0)
 
-		if err := ethermintApp.LoadHeight(height); err != nil {
+		if err := impactchainApp.LoadHeight(height); err != nil {
 			return nil, nil, err
 		}
 	} else {
-		ethermintApp = app.NewEthermintApp(logger, db, traceStore, true, map[int64]bool{}, 0)
+		impactchainApp = app.NewImpactchainApp(logger, db, traceStore, true, map[int64]bool{}, 0)
 	}
 
-	return ethermintApp.ExportAppStateAndValidators(forZeroHeight, jailWhiteList)
+	return impactchainApp.ExportAppStateAndValidators(forZeroHeight, jailWhiteList)
 }

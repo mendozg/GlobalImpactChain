@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	ethermint "github.com/cosmos/ethermint/types"
+	impactchain "github.com/mendozg/impactchain/types"
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )
@@ -39,7 +39,7 @@ func UnmarshalLogs(in []byte) ([]*ethtypes.Log, error) {
 
 // Validate performs a basic validation of a GenesisAccount fields.
 func (tx TransactionLogs) Validate() error {
-	if ethermint.IsEmptyHash(tx.Hash) {
+	if impactchain.IsEmptyHash(tx.Hash) {
 		return fmt.Errorf("hash cannot be the empty %s", tx.Hash)
 	}
 
@@ -59,16 +59,16 @@ func ValidateLog(log *ethtypes.Log) error {
 	if log == nil {
 		return errors.New("log cannot be nil")
 	}
-	if ethermint.IsZeroAddress(log.Address.String()) {
+	if impactchain.IsZeroAddress(log.Address.String()) {
 		return fmt.Errorf("log address cannot be empty %s", log.Address.String())
 	}
-	if ethermint.IsEmptyHash(log.BlockHash.String()) {
+	if impactchain.IsEmptyHash(log.BlockHash.String()) {
 		return fmt.Errorf("block hash cannot be the empty %s", log.BlockHash.String())
 	}
 	if log.BlockNumber == 0 {
 		return errors.New("block number cannot be zero")
 	}
-	if ethermint.IsEmptyHash(log.TxHash.String()) {
+	if impactchain.IsEmptyHash(log.TxHash.String()) {
 		return fmt.Errorf("tx hash cannot be the empty %s", log.TxHash.String())
 	}
 	return nil

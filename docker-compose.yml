@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  ethermintdnode0:
-    container_name: ethermintdnode0
-    image: "ethermintd/node"
+  impactchaindnode0:
+    container_name: impactchaindnode0
+    image: "impactchaind/node"
     ports:
       - "26656-26657:26656-26657"
       - "1317:1317"
@@ -11,17 +11,17 @@ services:
       - "8546:8546"
     environment:
       - ID=0
-      - LOG=${LOG:-ethermintd.log}
+      - LOG=${LOG:-impactchaind.log}
     volumes:
-      - ./build:/ethermint:Z
+      - ./build:/impactchain:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.2
     entrypoint: "bash start.sh"
 
-  ethermintdnode1:
-    container_name: ethermintdnode1
-    image: "ethermintd/node"
+  impactchaindnode1:
+    container_name: impactchaindnode1
+    image: "impactchaind/node"
     ports:
       - "26659-26660:26656-26657"
       - "1318:1317"
@@ -29,45 +29,45 @@ services:
       - "8548:8546"
     environment:
       - ID=1
-      - LOG=${LOG:-ethermintd.log}
+      - LOG=${LOG:-impactchaind.log}
     volumes:
-      - ./build:/ethermint:Z
+      - ./build:/impactchain:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.3
     entrypoint: "bash start.sh"
 
-  ethermintdnode2:
-    container_name: ethermintdnode2
-    image: "ethermintd/node"
+  impactchaindnode2:
+    container_name: impactchaindnode2
+    image: "impactchaind/node"
     environment:
       - ID=2
-      - LOG=${LOG:-ethermintd.log}
+      - LOG=${LOG:-impactchaind.log}
     ports:
       - "26661-26662:26656-26657"
       - "1319:1317"
       - "8549:8545"
       - "8550:8546"
     volumes:
-      - ./build:/ethermint:Z
+      - ./build:/impactchain:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.4
     entrypoint: "bash start.sh"
 
-  ethermintdnode3:
-    container_name: ethermintdnode3
-    image: "ethermintd/node"
+  impactchaindnode3:
+    container_name: impactchaindnode3
+    image: "impactchaind/node"
     environment:
       - ID=3
-      - LOG=${LOG:-ethermintd.log}
+      - LOG=${LOG:-impactchaind.log}
     ports:
       - "26663-26664:26656-26657"
       - "1320:1317"
       - "8551:8545"
       - "8552:8546"
     volumes:
-      - ./build:/ethermint:Z
+      - ./build:/impactchain:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.5

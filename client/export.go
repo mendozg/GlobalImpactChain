@@ -15,8 +15,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/input"
 	"github.com/cosmos/cosmos-sdk/crypto/keys"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	"github.com/cosmos/ethermint/crypto/hd"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	"github.com/mendozg/impactchain/crypto/hd"
 )
 
 // UnsafeExportEthKeyCommand exports a key with the given name as a private key in hex format.
@@ -63,7 +63,7 @@ func UnsafeExportEthKeyCommand() *cobra.Command {
 				return err
 			}
 
-			// Converts key to Ethermint secp256 implementation
+			// Converts key to Impactchain secp256 implementation
 			emintKey, ok := privKey.(ethsecp256k1.PrivKey)
 			if !ok {
 				return fmt.Errorf("invalid private key type, must be Ethereum key: %T", privKey)

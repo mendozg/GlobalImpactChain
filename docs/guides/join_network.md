@@ -8,39 +8,39 @@ This document outlines the steps to join the public testnet hosted by [Chainsafe
 
 ## Steps
 
-1. Install the Ethermint binaries (ethermintd & ethermint cli)
+1. Install the Impactchain binaries (impactchaind & impactchain cli)
 
     ```bash
-    git clone https://github.com/cosmos/ethermint
-    cd ethermint
+    git clone https://github.com/mendozg/impactchain
+    cd impactchain
     git checkout v0.4.1
     make install
     ```
 
-2. Create an Ethermint account
+2. Create an Impactchain account
 
     ```bash
-    ethermintcli keys add <keyname>
+    impactchaincli keys add <keyname>
     ```
 
 3. Copy genesis file
 
-    Follow this [link](https://gist.github.com/araskachoi/43f86f3edff23729b817e8b0bb86295a) and copy it over to the directory ~/.ethermintd/config/genesis.json
+    Follow this [link](https://gist.github.com/araskachoi/43f86f3edff23729b817e8b0bb86295a) and copy it over to the directory ~/.impactchaind/config/genesis.json
 
 4. Add peers
 
-    Edit the file located in ~/.ethermintd/config/config.toml and edit line 350 (persistent_peers) to the following
+    Edit the file located in ~/.impactchaind/config/config.toml and edit line 350 (persistent_peers) to the following
 
     ```toml
     "05aa6587f07a0c6a9a8213f0138c4a76d476418a@18.204.206.179:26656,13d4a1c16d1f427988b7c499b6d150726aaf3aa0@3.86.104.251:26656,a00db749fa51e485c8376276d29d599258052f3e@54.210.246.165:26656"
     ```
 
-5. Validate genesis and start the Ethermint network
+5. Validate genesis and start the Impactchain network
 
     ```bash
-    ethermintd validate-genesis
+    impactchaind validate-genesis
 
-    ethermintd start --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" --trace
+    impactchaind start --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" --trace
     ```
 
     (we recommend running the command in the background for convenience)
@@ -48,7 +48,7 @@ This document outlines the steps to join the public testnet hosted by [Chainsafe
 6. Start the RPC server
 
     ```bash
-    ethermintcli rest-server --laddr "tcp://localhost:8545" --unlock-key $KEY --chain-id etherminttestnet-777 --trace --rpc-api "web3,eth,net"
+    impactchaincli rest-server --laddr "tcp://localhost:8545" --unlock-key $KEY --chain-id impactchaintestnet-777 --trace --rpc-api "web3,eth,net"
     ```
 
     where `$KEY` is the key name that was used in step 2.

@@ -1,10 +1,10 @@
 syntax = "proto3";
-package ethermint.evm.v1alpha1;
+package impactchain.evm.v1alpha1;
 
 import "gogoproto/gogo.proto";
-import "ethermint/evm/v1alpha1/evm.proto";
+import "impactchain/evm/v1alpha1/evm.proto";
 
-option go_package = "github.com/cosmos/ethermint/x/evm/types";
+option go_package = "github.com/mendozg/impactchain/x/evm/types";
 
 // GenesisState defines the evm module's genesis state.
 message GenesisState {

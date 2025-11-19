@@ -4,7 +4,7 @@ set -eo pipefail
 
 protoc_gen_gocosmos() {
   if ! grep "github.com/gogo/protobuf => github.com/regen-network/protobuf" go.mod &>/dev/null ; then
-    echo -e "\tPlease run this command from somewhere inside the ethermint folder."
+    echo -e "\tPlease run this command from somewhere inside the impactchain folder."
     return 1
   fi
 
@@ -36,5 +36,5 @@ buf protoc -I "proto" -I "third_party/proto" -I "testutil/testdata" --gocosmos_o
 Mgoogle/protobuf/any.proto=github.com/cosmos/cosmos-sdk/codec/types:. ./testutil/testdata/*.proto
 
 # move proto files to the right places
-cp -r github.com/cosmos/ethermint/* ./
+cp -r github.com/mendozg/impactchain/* ./
 rm -rf github.com

@@ -4,7 +4,7 @@ order: 4
 
 # Photon
 
-Learn about the Photon, Ethermint's staking token. {synopsis}
+Learn about the Photon, Impactchain's staking token. {synopsis}
 
 ## Introduction
 
@@ -12,11 +12,11 @@ Learn about the Photon, Ethermint's staking token. {synopsis}
 The photon's initial distribution and supply is still TBD and will be announced in the future.
 :::
 
-The photon is the staking token used in Ethermint.
+The photon is the staking token used in Impactchain.
 
 ## Base Denomination
 
-Ethermint uses [Atto](https://en.wikipedia.org/wiki/Atto-) Photon as the base denomination to maintain parity with Ethereum.
+Impactchain uses [Atto](https://en.wikipedia.org/wiki/Atto-) Photon as the base denomination to maintain parity with Ethereum.
 
 ```
 1 photon = 1×10⁻¹⁸ aphoton
@@ -30,4 +30,4 @@ This matches Ethereum denomination of:
 
 ## Next {hide}
 
-Learn about the supported [JSON-RPC](./json_rpc.md) methods on Ethermint {hide}
+Learn about the supported [JSON-RPC](./json_rpc.md) methods on Impactchain {hide}

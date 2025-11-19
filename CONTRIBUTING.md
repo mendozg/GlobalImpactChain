@@ -1,4 +1,4 @@
-# Ethermint Contributor Guidelines
+# Impactchain Contributor Guidelines
 
 * [General Procedure](#general_procedure)
 * [Architecture Decision Records (ADR)](#adr)
@@ -17,9 +17,9 @@
 
 ## <span id="general_procedure">General Procedure</span>
 
-Thank you for considering making contributions to Ethermint and related repositories!
+Thank you for considering making contributions to Impactchain and related repositories!
 
-Ethermint uses [Tendermint’s coding repo](https://github.com/tendermint/coding) for overall information on repository
+Impactchain uses [Tendermint’s coding repo](https://github.com/tendermint/coding) for overall information on repository
 workflow and standards.
 
 Contributing to this repo can mean many things such as participating in discussion or proposing code changes. To ensure
@@ -30,7 +30,7 @@ a smooth workflow for all contributors, the following general procedure for cont
    resolving.
 2. Participate in thoughtful discussion on that issue.
 3. If you would like to contribute:
-    1. If the issue is a proposal, ensure that the proposal has been accepted by ChainSafe’s Ethermint team.
+    1. If the issue is a proposal, ensure that the proposal has been accepted by ChainSafe’s Impactchain team.
     2. Ensure that nobody else has already begun working on the same issue. If someone already has, please make sure to
        contact the individual to collaborate.
     3. If nobody has been assigned the issue and you would like to work on it, make a comment on the issue to inform the
@@ -49,7 +49,7 @@ a smooth workflow for all contributors, the following general procedure for cont
        format).
     8. Please make sure to run `make format` before every commit - the easiest way to do this is having your editor run
        it for you upon saving a file. Additionally, please ensure that your code is lint compliant by running `make lint`
-       . There are CI tests built into the Ethermint repository and all PR’s will require that these tests pass before
+       . There are CI tests built into the Impactchain repository and all PR’s will require that these tests pass before
        they are able to be merged.
 
 **Note**: for very small or blatantly obvious problems (such as typos), it is not required to open an issue to submit a
@@ -61,7 +61,7 @@ some [good first issues](https://github.com/cosmos/ethermint/issues?q=label%3A%2
 
 ## <span id="adr">Architecture Decision Records (ADR)</span>
 
-When proposing an architecture decision for Ethermint, please create
+When proposing an architecture decision for Impactchain, please create
 an [ADR](https://github.com/cosmos/ethermint/blob/development/docs/architecture/README.md) so further discussions can be
 made. We are following this process so all involved parties are in agreement before any party begins coding the proposed
 implementation. If you would like to see some examples of how these are written refer
@@ -104,7 +104,7 @@ on `go mod tidy -v`.
 ## <span id="protobuf">Protobuf</span>
 
 We use [Protocol Buffers](https://developers.google.com/protocol-buffers) along
-with [gogoproto](https://github.com/gogo/protobuf) to generate code for use in Ethermint.
+with [gogoproto](https://github.com/gogo/protobuf) to generate code for use in Impactchain.
 
 For deterministic behavior around Protobuf tooling, everything is containerized using Docker. Make sure to have Docker
 installed on your machine, or head to [Docker's website](https://docs.docker.com/get-docker/) to install it.
@@ -146,11 +146,11 @@ For example, in vscode your `.vscode/settings.json` should look like:
 
 ## <span id="testing">Testing</span>
 
-Ethermint uses [GitHub Actions](https://github.com/features/actions) for automated testing.
+Impactchain uses [GitHub Actions](https://github.com/features/actions) for automated testing.
 
 ## <span id="updating_doc">Updating Documentation</span>
 
-If you open a PR on the Ethermint repo, it is mandatory to update the relevant documentation in `/docs`. Please refer to
+If you open a PR on the Impactchain repo, it is mandatory to update the relevant documentation in `/docs`. Please refer to
 the docs subdirectory and make changes accordingly. Prior to approval, the Code owners/approvers may request some
 updates to specific docs.
 
@@ -160,7 +160,7 @@ User-facing repos should adhere to the [trunk based development branching model]
 
 Libraries need not follow the model strictly, but would be wise to.
 
-Ethermint utilizes [semantic versioning](https://semver.org/).
+Impactchain utilizes [semantic versioning](https://semver.org/).
 
 ### <span id="pr_targeting">PR Targeting</span>
 
@@ -215,5 +215,5 @@ All PRs require two Reviews before merge. When reviewing PRs, please use the fol
 8. Tag the release (use `git tag -a`) and create a release in Github.
 9. Delete the `RC` branches.
 
-**Note**: ChainSafe’s Ethermint team currently cuts releases on a need to have basis. We will announce a more
+**Note**: ChainSafe’s Impactchain team currently cuts releases on a need to have basis. We will announce a more
 standardized release schedule as we near production readiness.

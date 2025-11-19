@@ -20,8 +20,8 @@ import (
 	authvesting "github.com/cosmos/cosmos-sdk/x/auth/vesting"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 
-	"github.com/cosmos/ethermint/crypto/hd"
-	ethermint "github.com/cosmos/ethermint/types"
+	"github.com/mendozg/impactchain/crypto/hd"
+	impactchain "github.com/mendozg/impactchain/types"
 
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 )
@@ -114,7 +114,7 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 					return errors.New("invalid vesting parameters; must supply start and end time or end time")
 				}
 			} else {
-				genAccount = ethermint.EthAccount{
+				genAccount = impactchain.EthAccount{
 					BaseAccount: baseAccount,
 					CodeHash:    ethcrypto.Keccak256(nil),
 				}

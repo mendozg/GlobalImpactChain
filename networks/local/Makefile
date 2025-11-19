@@ -1,4 +1,4 @@
 all:
-	docker build --tag ethermintd/node ethermintnode
+	docker build --tag impactchaind/node impactchainnode
 
 .PHONY: all

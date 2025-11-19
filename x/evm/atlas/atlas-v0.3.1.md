@@ -11,9 +11,9 @@ The `x/evm` module is responsible for executing Ethereum Virtual Machine (EVM) s
       "github.com/cosmos/cosmos-sdk/x/auth"
       "github.com/cosmos/cosmos-sdk/x/bank"
        
-      "github.com/cosmos/ethermint/app/ante"
-      ethermint "github.com/cosmos/ethermint/types"
-      "github.com/cosmos/ethermint/x/evm"
+      "github.com/mendozg/impactchain/app/ante"
+      impactchain "github.com/mendozg/impactchain/types"
+      "github.com/mendozg/impactchain/x/evm"
    )
    ```
 
@@ -37,13 +37,13 @@ The `x/evm` module is responsible for executing Ethereum Virtual Machine (EVM) s
    }
    ```
 
-4. Define the Ethermint `ProtoAccount` for the `AccountKeeper`
+4. Define the Impactchain `ProtoAccount` for the `AccountKeeper`
 
    ```go
    func NewApp(...) *App {
       // ...
         app.AccountKeeper = auth.NewAccountKeeper(
-            cdc, keys[auth.StoreKey], app.subspaces[auth.ModuleName], ethermint.ProtoAccount,
+            cdc, keys[auth.StoreKey], app.subspaces[auth.ModuleName], impactchain.ProtoAccount,
         )
    }
    ```
@@ -92,7 +92,7 @@ The `x/evm` module is responsible for executing Ethereum Virtual Machine (EVM) s
     }
     ```
 
-9. Set the Ethermint `AnteHandler` to support EVM transactions. Note,
+9. Set the Impactchain `AnteHandler` to support EVM transactions. Note,
 the default `AnteHandler` provided by the `x/evm` module depends on the `x/auth` and `x/supply`
 modules.
 
@@ -174,8 +174,8 @@ type Params struct {
 
 ### JSON-RPC
 
-See the Ethermint [JSON-RPC docs](https://docs.ethermint.zone/basics/json_rpc.html) for reference.
+See the Impactchain [JSON-RPC docs](https://docs.impactchain.zone/basics/json_rpc.html) for reference.
 
 ## Documentation and Specification
 
-* Ethermint documentation: [https://docs.ethermint.zone](https://docs.ethermint.zone)
+* Impactchain documentation: [https://docs.impactchain.zone](https://docs.impactchain.zone)

@@ -8,7 +8,7 @@ import (
 	"math/big"
 	"sync/atomic"
 
-	"github.com/cosmos/ethermint/types"
+	"github.com/mendozg/impactchain/types"
 	"gopkg.in/yaml.v2"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	_ sdk.Msg = MsgEthermint{}
+	_ sdk.Msg = MsgImpactchain{}
 	_ sdk.Msg = MsgEthereumTx{}
 	_ sdk.Tx  = MsgEthereumTx{}
 )
@@ -32,12 +32,12 @@ var big8 = big.NewInt(8)
 const (
 	// TypeMsgEthereumTx defines the type string of an Ethereum tranasction
 	TypeMsgEthereumTx = "ethereum"
-	// TypeMsgEthermint defines the type string of Ethermint message
-	TypeMsgEthermint = "ethermint"
+	// TypeMsgImpactchain defines the type string of Impactchain message
+	TypeMsgImpactchain = "impactchain"
 )
 
-// MsgEthermint implements a cosmos equivalent structure for Ethereum transactions
-type MsgEthermint struct {
+// MsgImpactchain implements a cosmos equivalent structure for Ethereum transactions
+type MsgImpactchain struct {
 	AccountNonce uint64          `json:"nonce"`
 	Price        sdk.Int         `json:"gasPrice"`
 	GasLimit     uint64          `json:"gas"`
@@ -49,12 +49,12 @@ type MsgEthermint struct {
 	From sdk.AccAddress `json:"from"`
 }
 
-// NewMsgEthermint returns a reference to a new Ethermint transaction
-func NewMsgEthermint(
+// NewMsgImpactchain returns a reference to a new Impactchain transaction
+func NewMsgImpactchain(
 	nonce uint64, to *sdk.AccAddress, amount sdk.Int,
 	gasLimit uint64, gasPrice sdk.Int, payload []byte, from sdk.AccAddress,
-) MsgEthermint {
-	return MsgEthermint{
+) MsgImpactchain {
+	return MsgImpactchain{
 		AccountNonce: nonce,
 		Price:        gasPrice,
 		GasLimit:     gasLimit,
@@ -65,24 +65,24 @@ func NewMsgEthermint(
 	}
 }
 
-func (msg MsgEthermint) String() string {
+func (msg MsgImpactchain) String() string {
 	return fmt.Sprintf("nonce=%d gasPrice=%d gasLimit=%d recipient=%s amount=%d data=0x%x from=%s",
 		msg.AccountNonce, msg.Price, msg.GasLimit, msg.Recipient, msg.Amount, msg.Payload, msg.From)
 }
 
 // Route should return the name of the module
-func (msg MsgEthermint) Route() string { return RouterKey }
+func (msg MsgImpactchain) Route() string { return RouterKey }
 
 // Type returns the action of the message
-func (msg MsgEthermint) Type() string { return TypeMsgEthermint }
+func (msg MsgImpactchain) Type() string { return TypeMsgImpactchain }
 
 // GetSignBytes encodes the message for signing
-func (msg MsgEthermint) GetSignBytes() []byte {
+func (msg MsgImpactchain) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
 // ValidateBasic runs stateless checks on the message
-func (msg MsgEthermint) ValidateBasic() error {
+func (msg MsgImpactchain) ValidateBasic() error {
 	if msg.Price.IsZero() {
 		return sdkerrors.Wrapf(types.ErrInvalidValue, "gas price cannot be 0")
 	}
@@ -100,13 +100,13 @@ func (msg MsgEthermint) ValidateBasic() error {
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgEthermint) GetSigners() []sdk.AccAddress {
+func (msg MsgImpactchain) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.From}
 }
 
 // To returns the recipient address of the transaction. It returns nil if the
 // transaction is a contract creation.
-func (msg MsgEthermint) To() *ethcmn.Address {
+func (msg MsgImpactchain) To() *ethcmn.Address {
 	if msg.Recipient == nil {
 		return nil
 	}

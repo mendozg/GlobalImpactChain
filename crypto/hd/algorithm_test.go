@@ -15,11 +15,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keys/hd"
 	"github.com/cosmos/cosmos-sdk/tests"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
 )
 
-func TestEthermintKeygenFunc(t *testing.T) {
+func TestImpactchainKeygenFunc(t *testing.T) {
 	privkey, err := ethsecp256k1.GenerateKey()
 	require.NoError(t, err)
 
@@ -56,7 +56,7 @@ func TestEthermintKeygenFunc(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		privkey, err := EthermintKeygenFunc(tc.privKey, tc.algo)
+		privkey, err := ImpactchainKeygenFunc(tc.privKey, tc.algo)
 		if tc.expPass {
 			require.NoError(t, err, tc.name)
 		} else {
@@ -71,7 +71,7 @@ func TestKeyring(t *testing.T) {
 	mockIn := strings.NewReader("")
 	t.Cleanup(cleanup)
 
-	kr, err := keys.NewKeyring("ethermint", keys.BackendTest, dir, mockIn, EthSecp256k1Options()...)
+	kr, err := keys.NewKeyring("impactchain", keys.BackendTest, dir, mockIn, EthSecp256k1Options()...)
 	require.NoError(t, err)
 
 	// fail in retrieving key
@@ -80,14 +80,14 @@ func TestKeyring(t *testing.T) {
 	require.Nil(t, info)
 
 	mockIn.Reset("password\npassword\n")
-	info, mnemonic, err := kr.CreateMnemonic("foo", keys.English, ethermint.BIP44HDPath, EthSecp256k1)
+	info, mnemonic, err := kr.CreateMnemonic("foo", keys.English, impactchain.BIP44HDPath, EthSecp256k1)
 	require.NoError(t, err)
 	require.NotEmpty(t, mnemonic)
 	require.Equal(t, "foo", info.GetName())
 	require.Equal(t, "local", info.GetType().String())
 	require.Equal(t, EthSecp256k1, info.GetAlgo())
 
-	params := *hd.NewFundraiserParams(0, ethermint.Bip44CoinType, 0)
+	params := *hd.NewFundraiserParams(0, impactchain.Bip44CoinType, 0)
 	hdPath := params.String()
 
 	bz, err := DeriveKey(mnemonic, keys.DefaultBIP39Passphrase, hdPath, keys.Secp256k1)
@@ -126,7 +126,7 @@ func TestKeyring(t *testing.T) {
 func TestDerivation(t *testing.T) {
 	mnemonic := "picnic rent average infant boat squirrel federal assault mercy purity very motor fossil wheel verify upset box fresh horse vivid copy predict square regret"
 
-	bz, err := DeriveSecp256k1(mnemonic, keys.DefaultBIP39Passphrase, ethermint.BIP44HDPath)
+	bz, err := DeriveSecp256k1(mnemonic, keys.DefaultBIP39Passphrase, impactchain.BIP44HDPath)
 	require.NoError(t, err)
 	require.NotEmpty(t, bz)
 
@@ -136,11 +136,11 @@ func TestDerivation(t *testing.T) {
 
 	require.NotEqual(t, bz, badBz)
 
-	privkey, err := EthermintKeygenFunc(bz, EthSecp256k1)
+	privkey, err := ImpactchainKeygenFunc(bz, EthSecp256k1)
 	require.NoError(t, err)
 	require.NotEmpty(t, privkey)
 
-	badPrivKey, err := EthermintKeygenFunc(badBz, EthSecp256k1)
+	badPrivKey, err := ImpactchainKeygenFunc(badBz, EthSecp256k1)
 	require.NoError(t, err)
 	require.NotEmpty(t, badPrivKey)
 
@@ -149,7 +149,7 @@ func TestDerivation(t *testing.T) {
 	wallet, err := hdwallet.NewFromMnemonic(mnemonic)
 	require.NoError(t, err)
 
-	path := hdwallet.MustParseDerivationPath(ethermint.BIP44HDPath)
+	path := hdwallet.MustParseDerivationPath(impactchain.BIP44HDPath)
 	account, err := wallet.Derive(path, false)
 	require.NoError(t, err)
 
@@ -162,15 +162,15 @@ func TestDerivation(t *testing.T) {
 	require.Equal(t, badAccount.Address.String(), "0xF8D6FDf2B8b488ea37e54903750dcd13F67E71cb")
 	// Inequality of wrong derivation path address
 	require.NotEqual(t, account.Address.String(), badAccount.Address.String())
-	// Equality of Ethermint implementation
+	// Equality of Impactchain implementation
 	require.Equal(t, common.BytesToAddress(privkey.PubKey().Address().Bytes()).String(), "0xA588C66983a81e800Db4dF74564F09f91c026351")
 	require.Equal(t, common.BytesToAddress(badPrivKey.PubKey().Address().Bytes()).String(), "0xF8D6FDf2B8b488ea37e54903750dcd13F67E71cb")
 
-	// Equality of Eth and Ethermint implementation
+	// Equality of Eth and Impactchain implementation
 	require.Equal(t, common.BytesToAddress(privkey.PubKey().Address()).String(), account.Address.String())
 	require.Equal(t, common.BytesToAddress(badPrivKey.PubKey().Address()).String(), badAccount.Address.String())
 
-	// Inequality of wrong derivation path of Eth and Ethermint implementation
+	// Inequality of wrong derivation path of Eth and Impactchain implementation
 	require.NotEqual(t, common.BytesToAddress(privkey.PubKey().Address()).String(), badAccount.Address.String())
 	require.NotEqual(t, common.BytesToAddress(badPrivKey.PubKey().Address()).String(), account.Address.Hex())
 }

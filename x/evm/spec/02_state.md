@@ -21,16 +21,16 @@ The `x/evm` module keeps the following objects in state:
 take care of caching and storing nested states. It's the general query interface to retrieve
 contracts and accounts
 
-The Ethermint `CommitStateDB` is a concrete type that implements the EVM `StateDB` interface.
+The Impactchain `CommitStateDB` is a concrete type that implements the EVM `StateDB` interface.
 Instead of using a trie and database for querying and persistence, the `CommitStateDB` uses
 `KVStores` (key-value stores) and Cosmos SDK `Keeper`s to facilitate state transitions.
 
 The `CommitStateDB` contains a store key that allows the DB to write to a concrete subtree of the
 multistore that is only accessible to the EVM module.
 
-+++ https://github.com/cosmos/ethermint/blob/v0.3.1/x/evm/types/statedb.go#L33-L85
++++ https://github.com/mendozg/impactchain/blob/v0.3.1/x/evm/types/statedb.go#L33-L85
 
-The functionalities provided by the Ethermint `StateDB` are:
+The functionalities provided by the Impactchain `StateDB` are:
 
 * CRUD of `stateObject`s and accounts:
   * Balance
@@ -58,7 +58,7 @@ The functionalities provided by the Ethermint `StateDB` are:
 
 State objects are used by the VM which is unable to deal with database-level errors. Any error that occurs during a database read is memoized here and will eventually be returned by `StateDB.Commit`.
 
-The Ethermint `stateObject` is a concrete type that mimics the functionality from the `go-ethereum`
+The Impactchain `stateObject` is a concrete type that mimics the functionality from the `go-ethereum`
 private `stateObject` type. It keeps track of the interim values for the contract bytecode, storage
 state and balance of an `EthAccount`.
 
@@ -68,9 +68,9 @@ halting.
 
 When a `stateObject` is committed during `EndBlock`. It sets sets the account contract code to store, as well as the dirty storage state. The account's nonce and the account balance are updated by calling the `auth` and `bank` module setter functions, respectively.
 
-+++ https://github.com/cosmos/ethermint/blob/v0.3.1/x/evm/types/state_object.go#L49-L81
++++ https://github.com/mendozg/impactchain/blob/v0.3.1/x/evm/types/state_object.go#L49-L81
 
-The functionalities provided by the Ethermint `stateObject` are:
+The functionalities provided by the Impactchain `stateObject` are:
 
 * Storage state getter and setter (temporary)
 * Contract bytecode getter and setter (temporary)

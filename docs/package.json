@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "version": "1.0.0",
-  "description": "Ethermint Documentation",
+  "description": "Impactchain Documentation",
   "main": "index.js",
   "scripts": {
     "preserve": "./pre.sh",
@@ -12,7 +12,7 @@
     "postbuild": "./post.sh"
   },
   "keywords": [
-    "ethermint",
+    "impactchain",
     "cosmos",
     "ethereum",
     "blockchain",

@@ -3,8 +3,8 @@ package evm
 import (
 	"github.com/ethereum/go-ethereum/common"
 
-	ethermint "github.com/cosmos/ethermint/types"
-	"github.com/cosmos/ethermint/x/evm/types"
+	impactchain "github.com/mendozg/impactchain/types"
+	"github.com/mendozg/impactchain/x/evm/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -12,7 +12,7 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 )
 
-// NewHandler returns a handler for Ethermint type messages.
+// NewHandler returns a handler for Impactchain type messages.
 func NewHandler(k *Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) (result *sdk.Result, err error) {
 		snapshotStateDB := k.CommitStateDB.Copy()
@@ -33,7 +33,7 @@ func NewHandler(k *Keeper) sdk.Handler {
 		// effect, the data in the modified CommitStateDB is not rolled back,
 		// they take effect, and dirty data is generated.
 		// Therefore, the code here specifically deals with this situation.
-		// See https://github.com/cosmos/ethermint/issues/668 for more information.
+		// See https://github.com/mendozg/impactchain/issues/668 for more information.
 		defer func() {
 			if r := recover(); r != nil {
 				// We first used "k.CommitStateDB = snapshotStateDB" to roll back
@@ -49,8 +49,8 @@ func NewHandler(k *Keeper) sdk.Handler {
 		switch msg := msg.(type) {
 		case types.MsgEthereumTx:
 			result, err = handleMsgEthereumTx(ctx, k, msg)
-		case types.MsgEthermint:
-			result, err = handleMsgEthermint(ctx, k, msg)
+		case types.MsgImpactchain:
+			result, err = handleMsgImpactchain(ctx, k, msg)
 		default:
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized %s message type: %T", ModuleName, msg)
 		}
@@ -75,10 +75,10 @@ func handleMsgEthereumTx(ctx sdk.Context, k *Keeper, msg types.MsgEthereumTx) (*
 	return res, nil
 }
 
-// handleMsgEthermint handles an sdk.StdTx for an Ethereum state transition
-func handleMsgEthermint(ctx sdk.Context, k *Keeper, msg types.MsgEthermint) (*sdk.Result, error) {
+// handleMsgImpactchain handles an sdk.StdTx for an Ethereum state transition
+func handleMsgImpactchain(ctx sdk.Context, k *Keeper, msg types.MsgImpactchain) (*sdk.Result, error) {
 	// parse the chainID from a string to a base-10 integer
-	chainIDEpoch, err := ethermint.ParseChainID(ctx.ChainID())
+	chainIDEpoch, err := impactchain.ParseChainID(ctx.ChainID())
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func handleMsgEthermint(ctx sdk.Context, k *Keeper, msg types.MsgEthermint) (*sd
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(
-			types.EventTypeEthermint,
+			types.EventTypeImpactchain,
 			sdk.NewAttribute(sdk.AttributeKeyAmount, msg.Amount.String()),
 		),
 		sdk.NewEvent(
@@ -149,7 +149,7 @@ func handleMsgEthermint(ctx sdk.Context, k *Keeper, msg types.MsgEthermint) (*sd
 	if msg.Recipient != nil {
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeEthermint,
+				types.EventTypeImpactchain,
 				sdk.NewAttribute(types.AttributeKeyRecipient, msg.Recipient.String()),
 			),
 		)

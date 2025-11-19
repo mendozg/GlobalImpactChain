@@ -25,7 +25,7 @@ func init() {
 }
 
 // ----------------------------------------------------------------------------
-// Main Ethermint account
+// Main Impactchain account
 // ----------------------------------------------------------------------------
 
 // EthAccount implements the auth.Account interface and embeds an
@@ -78,7 +78,7 @@ func (acc *EthAccount) SetBalance(denom string, amt sdk.Int) {
 	}
 }
 
-type ethermintAccountPretty struct {
+type impactchainAccountPretty struct {
 	Address       sdk.AccAddress `json:"address" yaml:"address"`
 	EthAddress    string         `json:"eth_address" yaml:"eth_address"`
 	Coins         sdk.Coins      `json:"coins" yaml:"coins"`
@@ -90,7 +90,7 @@ type ethermintAccountPretty struct {
 
 // MarshalYAML returns the YAML representation of an account.
 func (acc EthAccount) MarshalYAML() (interface{}, error) {
-	alias := ethermintAccountPretty{
+	alias := impactchainAccountPretty{
 		Address:       acc.Address,
 		EthAddress:    acc.EthAddress().String(),
 		Coins:         acc.Coins,
@@ -124,7 +124,7 @@ func (acc EthAccount) MarshalJSON() ([]byte, error) {
 		ethAddress = acc.EthAddress().String()
 	}
 
-	alias := ethermintAccountPretty{
+	alias := impactchainAccountPretty{
 		Address:       acc.Address,
 		EthAddress:    ethAddress,
 		Coins:         acc.Coins,
@@ -148,7 +148,7 @@ func (acc EthAccount) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON unmarshals raw JSON bytes into an EthAccount.
 func (acc *EthAccount) UnmarshalJSON(bz []byte) error {
 	var (
-		alias ethermintAccountPretty
+		alias impactchainAccountPretty
 		err   error
 	)
 

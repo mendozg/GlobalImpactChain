@@ -6,8 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authexported "github.com/cosmos/cosmos-sdk/x/auth/exported"
 
-	ethermint "github.com/cosmos/ethermint/types"
-	"github.com/cosmos/ethermint/x/evm/types"
+	impactchain "github.com/mendozg/impactchain/types"
+	"github.com/mendozg/impactchain/x/evm/types"
 )
 
 const (
@@ -31,7 +31,7 @@ func (k Keeper) BalanceInvariant() sdk.Invariant {
 		)
 
 		k.accountKeeper.IterateAccounts(ctx, func(account authexported.Account) bool {
-			ethAccount, ok := account.(*ethermint.EthAccount)
+			ethAccount, ok := account.(*impactchain.EthAccount)
 			if !ok {
 				// ignore non EthAccounts
 				return false
@@ -71,7 +71,7 @@ func (k Keeper) NonceInvariant() sdk.Invariant {
 		)
 
 		k.accountKeeper.IterateAccounts(ctx, func(account authexported.Account) bool {
-			ethAccount, ok := account.(*ethermint.EthAccount)
+			ethAccount, ok := account.(*impactchain.EthAccount)
 			if !ok {
 				// ignore non EthAccounts
 				return false

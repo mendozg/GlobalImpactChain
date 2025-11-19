@@ -20,12 +20,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/cosmos/ethermint/app"
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
-	"github.com/cosmos/ethermint/x/evm"
-	"github.com/cosmos/ethermint/x/evm/keeper"
-	"github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/app"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
+	"github.com/mendozg/impactchain/x/evm"
+	"github.com/mendozg/impactchain/x/evm/keeper"
+	"github.com/mendozg/impactchain/x/evm/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
@@ -37,7 +37,7 @@ type EvmTestSuite struct {
 	ctx     sdk.Context
 	handler sdk.Handler
 	querier sdk.Querier
-	app     *app.EthermintApp
+	app     *app.ImpactchainApp
 	codec   *codec.Codec
 }
 
@@ -45,7 +45,7 @@ func (suite *EvmTestSuite) SetupTest() {
 	checkTx := false
 
 	suite.app = app.Setup(checkTx)
-	suite.ctx = suite.app.BaseApp.NewContext(checkTx, abci.Header{Height: 1, ChainID: "ethermint-3", Time: time.Now().UTC()})
+	suite.ctx = suite.app.BaseApp.NewContext(checkTx, abci.Header{Height: 1, ChainID: "impactchain-3", Time: time.Now().UTC()})
 	suite.handler = evm.NewHandler(suite.app.EvmKeeper)
 	suite.querier = keeper.NewQuerier(*suite.app.EvmKeeper)
 	suite.codec = codec.New()
@@ -74,7 +74,7 @@ func (suite *EvmTestSuite) TestHandleMsgEthereumTx() {
 				tx = types.NewMsgEthereumTx(0, &sender, big.NewInt(100), 0, big.NewInt(10000), nil)
 
 				// parse context chain ID to big.Int
-				chainID, err := ethermint.ParseChainID(suite.ctx.ChainID())
+				chainID, err := impactchain.ParseChainID(suite.ctx.ChainID())
 				suite.Require().NoError(err)
 
 				// sign transaction
@@ -89,7 +89,7 @@ func (suite *EvmTestSuite) TestHandleMsgEthereumTx() {
 				tx = types.NewMsgEthereumTxContract(0, big.NewInt(100), 0, big.NewInt(10000), nil)
 
 				// parse context chain ID to big.Int
-				chainID, err := ethermint.ParseChainID(suite.ctx.ChainID())
+				chainID, err := impactchain.ParseChainID(suite.ctx.ChainID())
 				suite.Require().NoError(err)
 
 				// sign transaction
@@ -141,9 +141,9 @@ func (suite *EvmTestSuite) TestHandleMsgEthereumTx() {
 	}
 }
 
-func (suite *EvmTestSuite) TestMsgEthermint() {
+func (suite *EvmTestSuite) TestMsgImpactchain() {
 	var (
-		tx   types.MsgEthermint
+		tx   types.MsgImpactchain
 		from = sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
 		to   = sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
 	)
@@ -156,7 +156,7 @@ func (suite *EvmTestSuite) TestMsgEthermint() {
 		{
 			"passed",
 			func() {
-				tx = types.NewMsgEthermint(0, &to, sdk.NewInt(1), 100000, sdk.NewInt(2), []byte("test"), from)
+				tx = types.NewMsgImpactchain(0, &to, sdk.NewInt(1), 100000, sdk.NewInt(2), []byte("test"), from)
 				suite.app.EvmKeeper.SetBalance(suite.ctx, ethcmn.BytesToAddress(from.Bytes()), big.NewInt(100))
 			},
 			true,
@@ -164,7 +164,7 @@ func (suite *EvmTestSuite) TestMsgEthermint() {
 		{
 			"invalid state transition",
 			func() {
-				tx = types.NewMsgEthermint(0, &to, sdk.NewInt(1), 100000, sdk.NewInt(2), []byte("test"), from)
+				tx = types.NewMsgImpactchain(0, &to, sdk.NewInt(1), 100000, sdk.NewInt(2), []byte("test"), from)
 			},
 			false,
 		},

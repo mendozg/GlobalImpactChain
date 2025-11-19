@@ -16,8 +16,8 @@ import (
 
 	clientcontext "github.com/cosmos/cosmos-sdk/client/context"
 
-	rpctypes "github.com/cosmos/ethermint/rpc/types"
-	evmtypes "github.com/cosmos/ethermint/x/evm/types"
+	rpctypes "github.com/mendozg/impactchain/rpc/types"
+	evmtypes "github.com/mendozg/impactchain/x/evm/types"
 )
 
 // Backend defines the methods requided by the PublicFilterAPI backend
@@ -297,10 +297,10 @@ func (api *PublicFilterAPI) Logs(ctx context.Context, crit filters.FilterCriteri
 			select {
 			case event := <-logsCh:
 				// filter only events from EVM module txs
-				_, isMsgEthermint := event.Events[evmtypes.TypeMsgEthermint]
+				_, isMsgImpactchain := event.Events[evmtypes.TypeMsgImpactchain]
 				_, isMsgEthereumTx := event.Events[evmtypes.TypeMsgEthereumTx]
 
-				if !(isMsgEthermint || isMsgEthereumTx) {
+				if !(isMsgImpactchain || isMsgEthereumTx) {
 					// ignore transaction as it's not from the evm module
 					return
 				}

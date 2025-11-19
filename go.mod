@@ -1,4 +1,4 @@
-module github.com/cosmos/ethermint
+module github.com/mendozg/impactchain
 
 go 1.15
 

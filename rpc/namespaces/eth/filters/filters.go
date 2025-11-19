@@ -10,7 +10,7 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/eth/filters"
 
-	rpctypes "github.com/cosmos/ethermint/rpc/types"
+	rpctypes "github.com/mendozg/impactchain/rpc/types"
 )
 
 // Filter can be used to retrieve and filter logs.
@@ -157,7 +157,7 @@ func (f *Filter) checkMatches(transactions []common.Hash) []*ethtypes.Log {
 		logs, err := f.backend.GetTransactionLogs(tx)
 		if err != nil {
 			// ignore error if transaction didn't set any logs (eg: when tx type is not
-			// MsgEthereumTx or MsgEthermint)
+			// MsgEthereumTx or MsgImpactchain)
 			continue
 		}
 

@@ -22,8 +22,8 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	ethermint "github.com/cosmos/ethermint/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	impactchain "github.com/mendozg/impactchain/types"
 )
 
 type JournalTestSuite struct {
@@ -43,7 +43,7 @@ func newTestCodec() *sdkcodec.Codec {
 	ethsecp256k1.RegisterCodec(cdc)
 	sdkcodec.RegisterCrypto(cdc)
 	auth.RegisterCodec(cdc)
-	ethermint.RegisterCodec(cdc)
+	impactchain.RegisterCodec(cdc)
 
 	return cdc
 }
@@ -57,8 +57,8 @@ func (suite *JournalTestSuite) SetupTest() {
 	suite.address = ethcmn.BytesToAddress(privkey.PubKey().Address().Bytes())
 	suite.journal = newJournal()
 
-	balance := sdk.NewCoins(ethermint.NewPhotonCoin(sdk.NewInt(100)))
-	acc := &ethermint.EthAccount{
+	balance := sdk.NewCoins(impactchain.NewPhotonCoin(sdk.NewInt(100)))
+	acc := &impactchain.EthAccount{
 		BaseAccount: auth.NewBaseAccount(sdk.AccAddress(suite.address.Bytes()), balance, nil, 0, 0),
 		CodeHash:    ethcrypto.Keccak256(nil),
 	}
@@ -92,7 +92,7 @@ func (suite *JournalTestSuite) SetupTest() {
 }
 
 // setup performs a manual setup of the GoLevelDB and mounts the required IAVL stores. We use the manual
-// setup here instead of the Ethermint app test setup because the journal methods are private and using
+// setup here instead of the Impactchain app test setup because the journal methods are private and using
 // the latter would result in a cycle dependency. We also want to avoid declaring the journal methods public
 // to maintain consistency with the Geth implementation.
 func (suite *JournalTestSuite) setup() {
@@ -123,8 +123,8 @@ func (suite *JournalTestSuite) setup() {
 	authSubspace := paramsKeeper.Subspace(auth.DefaultParamspace)
 	evmSubspace := paramsKeeper.Subspace(types.DefaultParamspace).WithKeyTable(ParamKeyTable())
 
-	ak := auth.NewAccountKeeper(cdc, authKey, authSubspace, ethermint.ProtoAccount)
-	suite.ctx = sdk.NewContext(cms, abci.Header{ChainID: "ethermint-8"}, false, tmlog.NewNopLogger())
+	ak := auth.NewAccountKeeper(cdc, authKey, authSubspace, impactchain.ProtoAccount)
+	suite.ctx = sdk.NewContext(cms, abci.Header{ChainID: "impactchain-8"}, false, tmlog.NewNopLogger())
 	suite.stateDB = NewCommitStateDB(suite.ctx, storeKey, evmSubspace, ak).WithContext(suite.ctx)
 	suite.stateDB.SetParams(DefaultParams())
 }

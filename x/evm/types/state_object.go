@@ -10,7 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authexported "github.com/cosmos/cosmos-sdk/x/auth/exported"
 
-	ethermint "github.com/cosmos/ethermint/types"
+	impactchain "github.com/mendozg/impactchain/types"
 
 	ethcmn "github.com/ethereum/go-ethereum/common"
 	ethstate "github.com/ethereum/go-ethereum/core/state"
@@ -53,7 +53,7 @@ type StateObject interface {
 // Account values can be accessed and modified through the object.
 // Finally, call CommitTrie to write the modified storage trie into a database.
 type stateObject struct {
-	code ethermint.Code // contract bytecode, which gets set when code is loaded
+	code impactchain.Code // contract bytecode, which gets set when code is loaded
 	// State objects are used by the consensus core and VM which are
 	// unable to deal with database-level errors. Any error that occurs
 	// during a database read is memoized here and will eventually be returned
@@ -64,7 +64,7 @@ type stateObject struct {
 	// DB error
 	dbErr   error
 	stateDB *CommitStateDB
-	account *ethermint.EthAccount
+	account *impactchain.EthAccount
 
 	keyToOriginStorageIndex map[ethcmn.Hash]int
 	keyToDirtyStorageIndex  map[ethcmn.Hash]int
@@ -82,20 +82,20 @@ type stateObject struct {
 
 func newStateObject(db *CommitStateDB, accProto authexported.Account) *stateObject {
 	// func newStateObject(db *CommitStateDB, accProto authexported.Account, balance sdk.Int) *stateObject {
-	ethermintAccount, ok := accProto.(*ethermint.EthAccount)
+	impactchainAccount, ok := accProto.(*impactchain.EthAccount)
 	if !ok {
 		panic(fmt.Sprintf("invalid account type for state object: %T", accProto))
 	}
 
 	// set empty code hash
-	if ethermintAccount.CodeHash == nil {
-		ethermintAccount.CodeHash = emptyCodeHash
+	if impactchainAccount.CodeHash == nil {
+		impactchainAccount.CodeHash = emptyCodeHash
 	}
 
 	return &stateObject{
 		stateDB:                 db,
-		account:                 ethermintAccount,
-		address:                 ethermintAccount.EthAddress(),
+		account:                 impactchainAccount,
+		address:                 impactchainAccount.EthAddress(),
 		originStorage:           Storage{},
 		dirtyStorage:            Storage{},
 		keyToOriginStorageIndex: make(map[ethcmn.Hash]int),
@@ -252,7 +252,7 @@ func (so *stateObject) commitState() {
 		value := ethcmn.HexToHash(state.Value)
 
 		// delete empty values from the store
-		if ethermint.IsEmptyHash(state.Value) {
+		if impactchain.IsEmptyHash(state.Value) {
 			store.Delete(key.Bytes())
 		}
 
@@ -264,7 +264,7 @@ func (so *stateObject) commitState() {
 			continue
 		}
 
-		if ethermint.IsEmptyHash(state.Value) {
+		if impactchain.IsEmptyHash(state.Value) {
 			delete(so.keyToOriginStorageIndex, key)
 			continue
 		}

@@ -1,7 +1,7 @@
-// This is a test utility for Ethermint's Web3 JSON-RPC services.
+// This is a test utility for Impactchain's Web3 JSON-RPC services.
 //
-// To run these tests please first ensure you have the ethermintd running
-// and have started the RPC service with `ethermintcli rest-server`.
+// To run these tests please first ensure you have the impactchaind running
+// and have started the RPC service with `impactchaincli rest-server`.
 //
 // You can configure the desired HOST and MODE as well
 package pending
@@ -18,8 +18,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
-	rpctypes "github.com/cosmos/ethermint/rpc/types"
-	util "github.com/cosmos/ethermint/tests"
+	rpctypes "github.com/mendozg/impactchain/rpc/types"
+	util "github.com/mendozg/impactchain/tests"
 )
 
 const (

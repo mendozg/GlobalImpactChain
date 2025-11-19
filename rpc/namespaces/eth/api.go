@@ -12,13 +12,13 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	"github.com/cosmos/ethermint/crypto/hd"
-	"github.com/cosmos/ethermint/rpc/backend"
-	rpctypes "github.com/cosmos/ethermint/rpc/types"
-	ethermint "github.com/cosmos/ethermint/types"
-	"github.com/cosmos/ethermint/utils"
-	evmtypes "github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	"github.com/mendozg/impactchain/crypto/hd"
+	"github.com/mendozg/impactchain/rpc/backend"
+	rpctypes "github.com/mendozg/impactchain/rpc/types"
+	impactchain "github.com/mendozg/impactchain/types"
+	"github.com/mendozg/impactchain/utils"
+	evmtypes "github.com/mendozg/impactchain/x/evm/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/crypto/merkle"
@@ -59,7 +59,7 @@ func NewAPI(
 	keys ...ethsecp256k1.PrivKey,
 ) *PublicEthereumAPI {
 
-	epoch, err := ethermint.ParseChainID(clientCtx.ChainID)
+	epoch, err := impactchain.ParseChainID(clientCtx.ChainID)
 	if err != nil {
 		panic(err)
 	}
@@ -124,7 +124,7 @@ func (api *PublicEthereumAPI) SetKeys(keys []ethsecp256k1.PrivKey) {
 // ProtocolVersion returns the supported Ethereum protocol version.
 func (api *PublicEthereumAPI) ProtocolVersion() hexutil.Uint {
 	api.logger.Debug("eth_protocolVersion")
-	return hexutil.Uint(ethermint.ProtocolVersion)
+	return hexutil.Uint(impactchain.ProtocolVersion)
 }
 
 // ChainId returns the chain's identifier in hex format
@@ -185,7 +185,7 @@ func (api *PublicEthereumAPI) Hashrate() hexutil.Uint64 {
 	return 0
 }
 
-// GasPrice returns the current gas price based on Ethermint's gas price oracle.
+// GasPrice returns the current gas price based on Impactchain's gas price oracle.
 func (api *PublicEthereumAPI) GasPrice() *hexutil.Big {
 	api.logger.Debug("eth_gasPrice")
 	out := big.NewInt(0)
@@ -514,7 +514,7 @@ func (api *PublicEthereumAPI) SendRawTransaction(data hexutil.Bytes) (common.Has
 // Call performs a raw contract call.
 func (api *PublicEthereumAPI) Call(args rpctypes.CallArgs, blockNr rpctypes.BlockNumber, _ *map[common.Address]rpctypes.Account) (hexutil.Bytes, error) {
 	api.logger.Debug("eth_call", "args", args, "block number", blockNr)
-	simRes, err := api.doCall(args, blockNr, big.NewInt(ethermint.DefaultRPCGasLimit))
+	simRes, err := api.doCall(args, blockNr, big.NewInt(impactchain.DefaultRPCGasLimit))
 	if err != nil {
 		return []byte{}, err
 	}
@@ -555,7 +555,7 @@ func (api *PublicEthereumAPI) doCall(
 
 	// Set default gas & gas price if none were set
 	// Change this to uint64(math.MaxUint64 / 2) if gas cap can be configured
-	gas := uint64(ethermint.DefaultRPCGasLimit)
+	gas := uint64(impactchain.DefaultRPCGasLimit)
 	if args.Gas != nil {
 		gas = uint64(*args.Gas)
 	}
@@ -565,7 +565,7 @@ func (api *PublicEthereumAPI) doCall(
 	}
 
 	// Set gas price using default or parameter if passed in
-	gasPrice := new(big.Int).SetUint64(ethermint.DefaultGasPrice)
+	gasPrice := new(big.Int).SetUint64(impactchain.DefaultGasPrice)
 	if args.GasPrice != nil {
 		gasPrice = args.GasPrice.ToInt()
 	}
@@ -590,11 +590,11 @@ func (api *PublicEthereumAPI) doCall(
 
 	var msgs []sdk.Msg
 	// Create new call message
-	msg := evmtypes.NewMsgEthermint(nonce, &toAddr, sdk.NewIntFromBigInt(value), gas,
+	msg := evmtypes.NewMsgImpactchain(nonce, &toAddr, sdk.NewIntFromBigInt(value), gas,
 		sdk.NewIntFromBigInt(gasPrice), data, sdk.AccAddress(addr.Bytes()))
 	msgs = append(msgs, msg)
 
-	// convert the pending transactions into ethermint msgs
+	// convert the pending transactions into impactchain msgs
 	if blockNum == rpctypes.PendingBlockNumber {
 		pendingMsgs, err := api.pendingMsgs()
 		if err != nil {
@@ -637,7 +637,7 @@ func (api *PublicEthereumAPI) doCall(
 // param from the SDK.
 func (api *PublicEthereumAPI) EstimateGas(args rpctypes.CallArgs) (hexutil.Uint64, error) {
 	api.logger.Debug("eth_estimateGas", "args", args)
-	simResponse, err := api.doCall(args, 0, big.NewInt(ethermint.DefaultRPCGasLimit))
+	simResponse, err := api.doCall(args, 0, big.NewInt(impactchain.DefaultRPCGasLimit))
 	if err != nil {
 		return 0, err
 	}
@@ -988,7 +988,7 @@ func (api *PublicEthereumAPI) GetProof(address common.Address, storageKeys []str
 		Balance:      (*hexutil.Big)(utils.MustUnmarshalBigInt(account.Balance)),
 		CodeHash:     common.BytesToHash(account.CodeHash),
 		Nonce:        hexutil.Uint64(account.Nonce),
-		StorageHash:  common.Hash{}, // Ethermint doesn't have a storage hash
+		StorageHash:  common.Hash{}, // Impactchain doesn't have a storage hash
 		StorageProof: storageProofs,
 	}, nil
 }
@@ -1006,7 +1006,7 @@ func (api *PublicEthereumAPI) generateFromArgs(args rpctypes.SendTxArgs) (*evmty
 	if args.GasPrice == nil {
 		// Set default gas price
 		// TODO: Change to min gas price from context once available through server/daemon
-		gasPrice = big.NewInt(ethermint.DefaultGasPrice)
+		gasPrice = big.NewInt(impactchain.DefaultGasPrice)
 	}
 
 	// get the nonce from the account retriever and the pending transactions
@@ -1060,7 +1060,7 @@ func (api *PublicEthereumAPI) generateFromArgs(args rpctypes.SendTxArgs) (*evmty
 }
 
 // pendingMsgs constructs an array of sdk.Msg. This method will check pending transactions and convert
-// those transactions into ethermint messages.
+// those transactions into impactchain messages.
 func (api *PublicEthereumAPI) pendingMsgs() ([]sdk.Msg, error) {
 	// nolint: prealloc
 	var msgs []sdk.Msg
@@ -1082,7 +1082,7 @@ func (api *PublicEthereumAPI) pendingMsgs() ([]sdk.Msg, error) {
 		}
 
 		pendingValue := pendingTx.Value.ToInt()
-		pendingGasPrice := new(big.Int).SetUint64(ethermint.DefaultGasPrice)
+		pendingGasPrice := new(big.Int).SetUint64(impactchain.DefaultGasPrice)
 		if pendingTx.GasPrice != nil {
 			pendingGasPrice = pendingTx.GasPrice.ToInt()
 		}
@@ -1090,7 +1090,7 @@ func (api *PublicEthereumAPI) pendingMsgs() ([]sdk.Msg, error) {
 		pendingData := pendingTx.Input
 		nonce, _ := api.accountNonce(api.clientCtx, pendingTx.From, true)
 
-		msg := evmtypes.NewMsgEthermint(nonce, &pendingTo, sdk.NewIntFromBigInt(pendingValue), pendingGas,
+		msg := evmtypes.NewMsgImpactchain(nonce, &pendingTo, sdk.NewIntFromBigInt(pendingValue), pendingGas,
 			sdk.NewIntFromBigInt(pendingGasPrice), pendingData, pendingFrom)
 
 		msgs = append(msgs, msg)

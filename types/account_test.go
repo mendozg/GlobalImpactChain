@@ -13,8 +13,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	"github.com/cosmos/ethermint/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	"github.com/mendozg/impactchain/types"
 )
 
 func init() {
@@ -69,7 +69,7 @@ func (suite *AccountTestSuite) TestEthAccount_Balance() {
 
 }
 
-func (suite *AccountTestSuite) TestEthermintAccountJSON() {
+func (suite *AccountTestSuite) TestImpactchainAccountJSON() {
 	bz, err := json.Marshal(suite.account)
 	suite.Require().NoError(err)
 
@@ -83,7 +83,7 @@ func (suite *AccountTestSuite) TestEthermintAccountJSON() {
 	suite.Require().Equal(suite.account.PubKey, a.PubKey)
 }
 
-func (suite *AccountTestSuite) TestEthermintPubKeyJSON() {
+func (suite *AccountTestSuite) TestImpactchainPubKeyJSON() {
 	privkey, err := ethsecp256k1.GenerateKey()
 	suite.Require().NoError(err)
 	bz := privkey.PubKey().Bytes()
@@ -102,7 +102,7 @@ func (suite *AccountTestSuite) TestSecpPubKeyJSON() {
 	suite.Require().Equal(pubk, pubkey)
 }
 
-func (suite *AccountTestSuite) TestEthermintAccount_String() {
+func (suite *AccountTestSuite) TestImpactchainAccount_String() {
 	config := sdk.GetConfig()
 	types.SetBech32Prefixes(config)
 
@@ -133,7 +133,7 @@ func (suite *AccountTestSuite) TestEthermintAccount_String() {
 	suite.Require().Contains(accountStr, bech32pubkey)
 }
 
-func (suite *AccountTestSuite) TestEthermintAccount_MarshalJSON() {
+func (suite *AccountTestSuite) TestImpactchainAccount_MarshalJSON() {
 	bz, err := suite.account.MarshalJSON()
 	suite.Require().NoError(err)
 	suite.Require().Contains(string(bz), suite.account.EthAddress().String())

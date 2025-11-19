@@ -2,7 +2,7 @@ package types
 
 // Evm module events
 const (
-	EventTypeEthermint  = TypeMsgEthermint
+	EventTypeImpactchain  = TypeMsgImpactchain
 	EventTypeEthereumTx = TypeMsgEthereumTx
 
 	AttributeKeyContractAddress = "contract"

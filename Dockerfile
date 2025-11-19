@@ -4,7 +4,7 @@ FROM golang:alpine AS build-env
 ENV PACKAGES git build-base
 
 # Set working directory for the build
-WORKDIR /go/src/github.com/cosmos/ethermint
+WORKDIR /go/src/github.com/mendozg/impactchain
 
 # Install dependencies
 RUN apk add --update $PACKAGES
@@ -24,8 +24,8 @@ RUN apk add --update ca-certificates jq
 WORKDIR /root
 
 # Copy over binaries from the build-env
-COPY --from=build-env /go/src/github.com/cosmos/ethermint/build/ethermintd /usr/bin/ethermintd
-COPY --from=build-env /go/src/github.com/cosmos/ethermint/build/ethermintcli /usr/bin/ethermintcli
+COPY --from=build-env /go/src/github.com/mendozg/impactchain/build/impactchaind /usr/bin/impactchaind
+COPY --from=build-env /go/src/github.com/mendozg/impactchain/build/impactchaincli /usr/bin/impactchaincli
 
-# Run ethermintd by default
-CMD ["ethermintd"]
+# Run impactchaind by default
+CMD ["impactchaind"]

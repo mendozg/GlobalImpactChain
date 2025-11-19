@@ -8,7 +8,7 @@ Learn how to deploy a local testnet or connect to an existing public one {synops
 
 ## Pre-requisite Readings
 
-- [Install Ethermint](./installation.md) {prereq}
+- [Install Impactchain](./installation.md) {prereq}
 - [Install Docker](https://docs.docker.com/engine/installation/)  {prereq}
 - [Install docker-compose](https://docs.docker.com/compose/install/)  {prereq}
 
@@ -23,23 +23,23 @@ This guide helps you create a single validator node that runs a network locally 
 ```bash
 $MONIKER=testing
 $KEY=mykey
-$CHAINID="ethermint-1"
+$CHAINID="impactchain-1"
 
-ethermintd init $MONIKER --chain-id=$CHAINID
+impactchaind init $MONIKER --chain-id=$CHAINID
 ```
 
 ::: warning
 Monikers can contain only ASCII characters. Using Unicode characters will render your node unreachable.
 :::
 
-You can edit this `moniker` later, in the `$(HOME)/.ethermintd/config/config.toml` file:
+You can edit this `moniker` later, in the `$(HOME)/.impactchaind/config/config.toml` file:
 
 ```toml
 # A custom human readable name for this node
 moniker = "<your_custom_moniker>"
 ```
 
-You can edit the `$HOME/.ethermintd/config/app.toml` file in order to enable the anti spam mechanism and reject incoming transactions with less than the minimum gas prices:
+You can edit the `$HOME/.impactchaind/config/app.toml` file in order to enable the anti spam mechanism and reject incoming transactions with less than the minimum gas prices:
 
 ```toml
 # This is a TOML config file.
@@ -58,21 +58,21 @@ minimum-gas-prices = ""
 
 ```bash
 # Create a key to hold your account
-ethermintcli keys add $KEY
+impactchaincli keys add $KEY
 
 # Add that key into the genesis.app_state.accounts array in the genesis file
 # NOTE: this command lets you set the number of coins. Make sure this account has some coins
 # with the genesis.app_state.staking.params.bond_denom denom, the default is staking
-ethermintd add-genesis-account $(ethermintcli keys show validator -a) 1000000000stake,10000000000aphoton
+impactchaind add-genesis-account $(impactchaincli keys show validator -a) 1000000000stake,10000000000aphoton
 
 # Generate the transaction that creates your validator
-ethermintd gentx --name $KEY
+impactchaind gentx --name $KEY
 
 # Add the generated bonding transaction to the genesis file
-ethermintd collect-gentxs
+impactchaind collect-gentxs
 
 # Finally, check the correctness of the genesis.json file
-ethermintd validate-genesis
+impactchaind validate-genesis
 ```
 
 ### Run Testnet
@@ -80,7 +80,7 @@ ethermintd validate-genesis
 Now its safe to start the daemon:
 
 ```bash
-ethermintd start
+impactchaind start
 ```
 
 You can then stop the node using Ctrl+C.
@@ -95,15 +95,15 @@ To build start a 4 node testnet run:
 make localnet-start
 ```
 
-This command creates a 4-node network using the `ethermintdnode` Docker image.
+This command creates a 4-node network using the `impactchaindnode` Docker image.
 The ports for each node are found in this table:
 
 | Node ID          | P2P Port | Tendermint RPC Port | REST/ Ethereum JSON-RPC Port | WebSocket Port |
 |------------------|----------|---------------------|------------------------------|----------------|
-| `ethermintnode0` | `26656`  | `26657`             | `8545`                       | `8546`         |
-| `ethermintnode1` | `26659`  | `26660`             | `8547`                       | `8548`         |
-| `ethermintnode2` | `26661`  | `26662`             | `8549`                       | `8550`         |
-| `ethermintnode3` | `26663`  | `26664`             | `8551`                       | `8552`         |
+| `impactchainnode0` | `26656`  | `26657`             | `8545`                       | `8546`         |
+| `impactchainnode1` | `26659`  | `26660`             | `8547`                       | `8548`         |
+| `impactchainnode2` | `26661`  | `26662`             | `8549`                       | `8550`         |
+| `impactchainnode3` | `26663`  | `26664`             | `8551`                       | `8552`         |
 
 To update the binary, just rebuild it and restart the nodes
 
@@ -115,11 +115,11 @@ The command above  command will run containers in the background using Docker co
 
 ```bash
 ...
-Creating network "chainsafe-ethermint_localnet" with driver "bridge"
-Creating ethermintdnode0 ... done
-Creating ethermintdnode2 ... done
-Creating ethermintdnode1 ... done
-Creating ethermintdnode3 ... done
+Creating network "chainsafe-impactchain_localnet" with driver "bridge"
+Creating impactchaindnode0 ... done
+Creating impactchaindnode2 ... done
+Creating impactchaindnode1 ... done
+Creating impactchaindnode3 ... done
 ```
 
 
@@ -134,55 +134,55 @@ make localnet-stop
 ### Configuration
 
 The `make localnet-start` creates files for a 4-node testnet in `./build` by
-calling the `ethermintd testnet` command. This outputs a handful of files in the
+calling the `impactchaind testnet` command. This outputs a handful of files in the
 `./build` directory:
 
 ```bash
 tree -L 3 build/
 
 build/
-├── ethermintcli
-├── ethermintd
+├── impactchaincli
+├── impactchaind
 ├── gentxs
 │   ├── node0.json
 │   ├── node1.json
 │   ├── node2.json
 │   └── node3.json
 ├── node0
-│   ├── ethermintcli
+│   ├── impactchaincli
 │   │   ├── key_seed.json
 │   │   └── keyring-test-cosmos
-│   └── ethermintd
+│   └── impactchaind
 │       ├── config
 │       ├── data
-│       └── ethermintd.log
+│       └── impactchaind.log
 ├── node1
-│   ├── ethermintcli
+│   ├── impactchaincli
 │   │   ├── key_seed.json
 │   │   └── keyring-test-cosmos
-│   └── ethermintd
+│   └── impactchaind
 │       ├── config
 │       ├── data
-│       └── ethermintd.log
+│       └── impactchaind.log
 ├── node2
-│   ├── ethermintcli
+│   ├── impactchaincli
 │   │   ├── key_seed.json
 │   │   └── keyring-test-cosmos
-│   └── ethermintd
+│   └── impactchaind
 │       ├── config
 │       ├── data
-│       └── ethermintd.log
+│       └── impactchaind.log
 └── node3
-    ├── ethermintcli
+    ├── impactchaincli
     │   ├── key_seed.json
     │   └── keyring-test-cosmos
-    └── ethermintd
+    └── impactchaind
         ├── config
         ├── data
-        └── ethermintd.log
+        └── impactchaind.log
 ```
 
-Each `./build/nodeN` directory is mounted to the `/ethermintd` directory in each container.
+Each `./build/nodeN` directory is mounted to the `/impactchaind` directory in each container.
 
 ### Logging
 
@@ -190,10 +190,10 @@ In order to see the logs of a particular node you can use the following command:
 
 ```bash
 # node 0: daemon logs
-docker exec ethermintdnode0 tail ethermintd.log
+docker exec impactchaindnode0 tail impactchaind.log
 
 # node 0: REST & RPC logs
-docker exec ethermintdnode0 tail ethermintcli.log
+docker exec impactchaindnode0 tail impactchaincli.log
 ```
 
 The logs for the daemon will look like:
@@ -231,7 +231,7 @@ You can also watch logs as they are produced via Docker with the `--follow` (`-f
 example:
 
 ```bash
-docker logs -f ethermintdnode0
+docker logs -f impactchaindnode0
 ```
 
 ### Interact With the Testnet
@@ -258,18 +258,18 @@ Additional instructions on how to interact with the WebSocket can be found on th
 
 ### Keys & Accounts
 
-To interact with `ethermintcli` and start querying state or creating txs, you use the
-`ethermintcli` directory of any given node as your `home`, for example:
+To interact with `impactchaincli` and start querying state or creating txs, you use the
+`impactchaincli` directory of any given node as your `home`, for example:
 
 ```bash
-ethermintcli keys list --home ./build/node0/ethermintcli
+impactchaincli keys list --home ./build/node0/impactchaincli
 ```
 
 Now that accounts exists, you may create new accounts and send those accounts
 funds!
 
 ::: tip
-**Note**: Each node's seed is located at `./build/nodeN/ethermintcli/key_seed.json` and can be restored to the CLI using the `ethermintcli keys add --restore` command
+**Note**: Each node's seed is located at `./build/nodeN/impactchaincli/key_seed.json` and can be restored to the CLI using the `impactchaincli keys add --restore` command
 :::
 
 ### Special Binaries
@@ -278,7 +278,7 @@ If you have multiple binaries with different names, you can specify which one to
 
 ```bash
 # Run with custom binary
-BINARY=ethermint make localnet-start
+BINARY=impactchain make localnet-start
 ```
 
 ## Multi-node, Public, Manual Testnet
@@ -293,17 +293,17 @@ If you are looking to connect to a persistent public testnet. You will need to m
 If you want to start a network from scratch, you will need to start the [genesis procedure](#genesis-procedure) by creating a `genesis.json` and submit + collect the genesis transactions from the [validators](./validator-setup.md).
 :::
 
-If you want to connect to an existing testnet, fetch the testnet's `genesis.json` file and copy it into the `ethermintd`'s config directory (i.e `$HOME/.ethermintd/config/genesis.json`).
+If you want to connect to an existing testnet, fetch the testnet's `genesis.json` file and copy it into the `impactchaind`'s config directory (i.e `$HOME/.impactchaind/config/genesis.json`).
 
 Then verify the correctness of the genesis configuration file:
 
 ```bash
-ethermintd validate-genesis
+impactchaind validate-genesis
 ```
 
 #### Add Seed Nodes
 
-Your node needs to know how to find peers. You'll need to add healthy seed nodes to `$HOME/.ethermintd/config/config.toml`. If those seeds aren't working, you can find more seeds and persistent peers on an existing explorer.
+Your node needs to know how to find peers. You'll need to add healthy seed nodes to `$HOME/.impactchaind/config/config.toml`. If those seeds aren't working, you can find more seeds and persistent peers on an existing explorer.
 
 For more information on seeds and peers, you can the Tendermint [P2P documentation](https://docs.tendermint.com/master/spec/p2p/peer.html).
 
@@ -313,4 +313,4 @@ The final step is to [start the nodes](./run_node.md#start-node). Once enough vo
 
 ## Next {hide}
 
-Learn about how to setup a [validator](./validator-setup.md) node on Ethermint {hide}
+Learn about how to setup a [validator](./validator-setup.md) node on Impactchain {hide}

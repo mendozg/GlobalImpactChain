@@ -1,7 +1,7 @@
-// This is a test utility for Ethermint's Web3 JSON-RPC services.
+// This is a test utility for Impactchain's Web3 JSON-RPC services.
 //
-// To run these tests please first ensure you have the ethermintd running
-// and have started the RPC service with `ethermintcli rest-server`.
+// To run these tests please first ensure you have the impactchaind running
+// and have started the RPC service with `impactchaincli rest-server`.
 //
 // You can configure the desired HOST and MODE as well
 package tests
@@ -22,8 +22,8 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	rpctypes "github.com/cosmos/ethermint/rpc/types"
-	ethermint "github.com/cosmos/ethermint/types"
+	rpctypes "github.com/mendozg/impactchain/rpc/types"
+	impactchain "github.com/mendozg/impactchain/types"
 )
 
 const (
@@ -145,7 +145,7 @@ func TestEth_GetTransactionLogs(t *testing.T) {
 }
 
 func TestEth_protocolVersion(t *testing.T) {
-	expectedRes := hexutil.Uint(ethermint.ProtocolVersion)
+	expectedRes := hexutil.Uint(impactchain.ProtocolVersion)
 
 	rpcRes := Call(t, "eth_protocolVersion", []string{})
 

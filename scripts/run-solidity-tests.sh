@@ -2,13 +2,13 @@
 
 export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
-go build -o ./build/ethermintd ./cmd/ethermintd
-go build -o ./build/ethermintcli ./cmd/ethermintcli
+go build -o ./build/impactchaind ./cmd/impactchaind
+go build -o ./build/impactchaincli ./cmd/impactchaincli
 mkdir $GOPATH/bin
-cp ./build/ethermintd $GOPATH/bin
-cp ./build/ethermintcli $GOPATH/bin
+cp ./build/impactchaind $GOPATH/bin
+cp ./build/impactchaincli $GOPATH/bin
 
-CHAINID="ethermint-1337"
+CHAINID="impactchain-1337"
 
 cd tests-solidity
 
@@ -22,12 +22,12 @@ else
 fi
 
 chmod +x ./init-test-node.sh
-./init-test-node.sh > ethermintd.log &
+./init-test-node.sh > impactchaind.log &
 sleep 5
-ethermintcli rest-server --laddr "tcp://localhost:8545" --unlock-key localkey,user1,user2 --chain-id $CHAINID --trace --wsport 8546 --rpc-api="web3,eth,net,personal" > ethermintcli.log &
+impactchaincli rest-server --laddr "tcp://localhost:8545" --unlock-key localkey,user1,user2 --chain-id $CHAINID --trace --wsport 8546 --rpc-api="web3,eth,net,personal" > impactchaincli.log &
 
 cd suites/initializable
-yarn test-ethermint
+yarn test-impactchain
 
 ok=$?
 
@@ -35,20 +35,20 @@ if (( $? != 0 )); then
     echo "initializable test failed: exit code $?"
 fi
 
-killall ethermintcli
-killall ethermintd
+killall impactchaincli
+killall impactchaind
 
 echo "Script exited with code $ok"
 exit $ok
 
 # initializable-buidler fails on CI, re-add later
 
-./../../init-test-node.sh > ethermintd.log &
+./../../init-test-node.sh > impactchaind.log &
 sleep 5
-ethermintcli rest-server --laddr "tcp://localhost:8545" --unlock-key localkey,user1,user2 --chain-id $CHAINID --trace --wsport 8546 --rpc-api="web3,eth,net,personal" > ethermintcli.log &
+impactchaincli rest-server --laddr "tcp://localhost:8545" --unlock-key localkey,user1,user2 --chain-id $CHAINID --trace --wsport 8546 --rpc-api="web3,eth,net,personal" > impactchaincli.log &
 
 cd ../initializable-buidler
-yarn test-ethermint
+yarn test-impactchain
 
 ok=$(($? + $ok))
 
@@ -56,8 +56,8 @@ if (( $? != 0 )); then
     echo "initializable-buidler test failed: exit code $?"
 fi
 
-killall ethermintcli
-killall ethermintd
+killall impactchaincli
+killall impactchaind
 
 echo "Script exited with code $ok"
 exit $ok

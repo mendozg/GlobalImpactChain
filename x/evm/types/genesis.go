@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	ethermint "github.com/cosmos/ethermint/types"
+	impactchain "github.com/mendozg/impactchain/types"
 
 	ethcmn "github.com/ethereum/go-ethereum/common"
 )
@@ -31,7 +31,7 @@ type (
 
 // Validate performs a basic validation of a GenesisAccount fields.
 func (ga GenesisAccount) Validate() error {
-	if ethermint.IsZeroAddress(ga.Address) {
+	if impactchain.IsZeroAddress(ga.Address) {
 		return fmt.Errorf("address cannot be the zero address %s", ga.Address)
 	}
 	if len(ethcmn.Hex2Bytes(ga.Code)) == 0 {

@@ -8,8 +8,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	evmtypes "github.com/cosmos/ethermint/x/evm/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	evmtypes "github.com/mendozg/impactchain/x/evm/types"
 
 	tmcrypto "github.com/tendermint/tendermint/crypto"
 )
@@ -87,7 +87,7 @@ func sigGasConsumer(
 	}
 }
 
-// AccountSetupDecorator sets an account to state if it's not stored already. This only applies for MsgEthermint.
+// AccountSetupDecorator sets an account to state if it's not stored already. This only applies for MsgImpactchain.
 type AccountSetupDecorator struct {
 	ak auth.AccountKeeper
 }
@@ -99,7 +99,7 @@ func NewAccountSetupDecorator(ak auth.AccountKeeper) AccountSetupDecorator {
 	}
 }
 
-// AnteHandle sets an account for MsgEthermint (evm) if the sender is registered.
+// AnteHandle sets an account for MsgImpactchain (evm) if the sender is registered.
 // NOTE: Since the account is set without any funds, the message execution will
 // fail if the validator requires a minimum fee > 0.
 func (asd AccountSetupDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
@@ -109,8 +109,8 @@ func (asd AccountSetupDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate
 	}
 
 	for _, msg := range msgs {
-		if msgEthermint, ok := msg.(evmtypes.MsgEthermint); ok {
-			setupAccount(asd.ak, ctx, msgEthermint.From)
+		if msgImpactchain, ok := msg.(evmtypes.MsgImpactchain); ok {
+			setupAccount(asd.ak, ctx, msgImpactchain.From)
 		}
 	}
 

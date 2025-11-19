@@ -5,14 +5,14 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client/context"
 
-	"github.com/cosmos/ethermint/crypto/ethsecp256k1"
-	"github.com/cosmos/ethermint/rpc/backend"
-	"github.com/cosmos/ethermint/rpc/namespaces/eth"
-	"github.com/cosmos/ethermint/rpc/namespaces/eth/filters"
-	"github.com/cosmos/ethermint/rpc/namespaces/net"
-	"github.com/cosmos/ethermint/rpc/namespaces/personal"
-	"github.com/cosmos/ethermint/rpc/namespaces/web3"
-	rpctypes "github.com/cosmos/ethermint/rpc/types"
+	"github.com/mendozg/impactchain/crypto/ethsecp256k1"
+	"github.com/mendozg/impactchain/rpc/backend"
+	"github.com/mendozg/impactchain/rpc/namespaces/eth"
+	"github.com/mendozg/impactchain/rpc/namespaces/eth/filters"
+	"github.com/mendozg/impactchain/rpc/namespaces/net"
+	"github.com/mendozg/impactchain/rpc/namespaces/personal"
+	"github.com/mendozg/impactchain/rpc/namespaces/web3"
+	rpctypes "github.com/mendozg/impactchain/rpc/types"
 )
 
 // RPC namespaces and API version
